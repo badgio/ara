@@ -1,5 +1,5 @@
 name: ara
-description: A new Flutter project.
+description: Mobile app for the Badgio platform.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -23,6 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Firebase Core Flutter SDK
+  firebase_core: ^0.5.1
+  # Firebase Auth
+  firebase_auth: ^0.18.2
+  # Firebase Analytics
+  firebase_analytics: ^6.1.0
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "127892155972",
+    "firebase_url": "https://badgio-f2524.firebaseio.com",
+    "project_id": "badgio-f2524",
+    "storage_bucket": "badgio-f2524.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127892155972:android:56cac7faba1688ac9a5611",
+        "android_client_info": {
+          "package_name": "pt.badgio.ara"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127892155972-q4ll46tak55k6pmjio4r8l2302lic1un.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARuV0ZmkHOtFuv2DJ66wesLDHTCYFEDEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127892155972-q4ll46tak55k6pmjio4r8l2302lic1un.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
