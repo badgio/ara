@@ -1,5 +1,6 @@
 import 'package:ara/redux/authentication/auth_actions.dart';
 import 'package:ara/redux/app_state.dart';
+import 'package:ara/views/common/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ara/validators/auth_validators.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -8,9 +9,8 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign-In Page'),
-        centerTitle: true,
+      appBar: CommonAppBar(
+        title: "Sign-In",
       ),
       body: Container(
         child: Column(

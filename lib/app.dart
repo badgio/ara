@@ -1,6 +1,7 @@
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/redux/authentication/auth_actions.dart';
 import 'package:ara/repositories/user_repository.dart';
+import 'package:ara/views/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -10,7 +11,6 @@ import 'package:ara/routes.dart';
 import 'package:ara/redux/app_reducer.dart';
 import 'package:ara/redux/authentication/auth_middleware.dart';
 import 'package:ara/views/sign_in.dart';
-import 'package:ara/views/home.dart';
 
 class BadgioApp extends StatefulWidget {
   const BadgioApp({
@@ -50,7 +50,7 @@ class _BadgioAppState extends State<BadgioApp> {
               return SignInPage();
             },
             Routes.home: (context) {
-              return HomePage();
+              return MainScreen();
             }
           },
           navigatorKey: _navigatorKey,
