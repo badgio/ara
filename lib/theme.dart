@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 class AriaTheme {
   ThemeData get theme => ThemeData(
-      primaryColor: Colors.red,
-      backgroundColor: Colors.white,
-      bottomNavigationBarTheme: bottomBarTheme);
+        primaryColor: Colors.red,
+        backgroundColor: Colors.white,
+        bottomNavigationBarTheme: bottomBarTheme,
+        textTheme: textTheme,
+        dividerColor: Colors.black,
+      );
 
   static const double appBarSize = 52.0;
 
@@ -17,4 +20,16 @@ class AriaTheme {
     selectedIconTheme: IconThemeData(size: 28),
     selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
   );
+
+  TextTheme textTheme = TextTheme(
+      headline4: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 25,
+      ),
+      headline5: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ));
 }

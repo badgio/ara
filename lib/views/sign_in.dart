@@ -48,7 +48,7 @@ class _SignInFormState extends State<_SignInForm> {
     final signInCallback = () {
       if (_formKey.currentState.validate()) {
         // Hide keyboard when validating
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).unfocus();
 
         final SignInAction signInAction = SignInAction(
             email: _emailController.text, password: _passwordController.text);
@@ -78,7 +78,6 @@ class _SignInFormState extends State<_SignInForm> {
     );
 
     final email = TextFormField(
-      autofocus: true,
       decoration: const InputDecoration(
         labelText: 'E-mail',
         hintText: 'Enter your e-mail address',

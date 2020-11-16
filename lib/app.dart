@@ -1,5 +1,7 @@
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/redux/authentication/auth_actions.dart';
+import 'package:ara/redux/collections/collections_middleware.dart';
+import 'package:ara/repositories/collection_repository.dart';
 import 'package:ara/repositories/user_repository.dart';
 import 'package:ara/views/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,8 +25,15 @@ class BadgioApp extends StatefulWidget {
 
 class _BadgioAppState extends State<BadgioApp> {
   Store<AppState> store;
-  static final _navigatorKey = GlobalKey<NavigatorState>();
+  Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
+    Routes.signIn: GlobalKey<NavigatorState>(),
+    Routes.home: GlobalKey<NavigatorState>(),
+    Routes.search: GlobalKey<NavigatorState>(),
+    Routes.collections: GlobalKey<NavigatorState>(),
+    Routes.you: GlobalKey<NavigatorState>(),
+  };
   final userRepository = UserRepository(FirebaseAuth.instance);
+  final collectionRepository = CollectionRepository();
 
   @override
   void initState() {
@@ -32,7 +41,15 @@ class _BadgioAppState extends State<BadgioApp> {
     store = Store<AppState>(
       appReducer,
       initialState: AppState.init(),
-      middleware: createAuthMiddleware(userRepository, _navigatorKey),
+      middleware: createAuthMiddleware(
+        userRepository,
+        _navigatorKeys[Routes.signIn],
+      )..addAll(
+          createCollectionsMiddleware(
+            collectionRepository,
+            _navigatorKeys,
+          ),
+        ),
     );
     store.dispatch(VerifyAuthenticationStateAction());
   }
@@ -40,20 +57,21 @@ class _BadgioAppState extends State<BadgioApp> {
   @override
   Widget build(BuildContext context) {
     return StoreProvider(
-        store: store,
-        child: MaterialApp(
-          title: 'Badgio',
-          theme: AriaTheme().theme,
-          home: SignInPage(),
-          routes: {
-            Routes.signIn: (context) {
-              return SignInPage();
-            },
-            Routes.home: (context) {
-              return MainScreen();
-            }
+      store: store,
+      child: MaterialApp(
+        title: 'Badgio',
+        theme: AriaTheme().theme,
+        home: SignInPage(),
+        navigatorKey: _navigatorKeys[Routes.signIn],
+        routes: {
+          Routes.signIn: (context) {
+            return SignInPage();
           },
-          navigatorKey: _navigatorKey,
-        ));
+          Routes.home: (context) {
+            return MainScreen(navigatorKeys: _navigatorKeys);
+          }
+        },
+      ),
+    );
   }
 }

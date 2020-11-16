@@ -8,5 +8,9 @@ final navReducers = combineReducers<AppState>([
 
 AppState _updateBottomBarIndex(
     AppState state, BottomBarIndexUpdateAction action) {
-  return AppState(user: state.user, navSelectedIndex: action.newIndex);
+  return AppState(
+    user: state.user,
+    navSelectedIndex: action.newIndex,
+    selectedCollection: state.selectedCollection,
+  );
 }

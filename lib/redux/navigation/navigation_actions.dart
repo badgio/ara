@@ -1,7 +1,7 @@
 class BottomBarIndexUpdateAction {
   final int newIndex;
 
-  BottomBarIndexUpdateAction({this.newIndex});
+  const BottomBarIndexUpdateAction({this.newIndex});
 
   @override
   String toString() {
