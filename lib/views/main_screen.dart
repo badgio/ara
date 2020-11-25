@@ -1,7 +1,8 @@
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/routes.dart';
-import 'package:ara/views/common/bottom_bar.dart';
 import 'package:ara/views/common/app_bar.dart';
+import 'package:ara/views/bottom_bar.dart';
+import 'package:ara/views/redeem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -45,7 +46,25 @@ class _MainScreenState extends State<MainScreen> {
               title: _getTitle(vm),
             ),
             body: _getBody(vm),
-            bottomNavigationBar: BottomBar(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => RedeemPage()));
+              },
+              child: Icon(Icons.add),
+              elevation: 2.0,
+            ),
+            bottomNavigationBar: FABBottomAppBar(
+              items: [
+                FABBottomAppBarItem(iconData: Icons.home, text: 'Home'),
+                FABBottomAppBarItem(iconData: Icons.search, text: 'Search'),
+                FABBottomAppBarItem(
+                    iconData: Icons.book_outlined, text: 'Collections'),
+                FABBottomAppBarItem(iconData: Icons.person, text: 'You'),
+              ],
+            ),
           ),
         );
       },
