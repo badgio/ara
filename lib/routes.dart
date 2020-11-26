@@ -2,7 +2,7 @@ import 'package:ara/views/collections/collection.dart';
 import 'package:ara/views/collections/collections_page.dart';
 import 'package:ara/views/home.dart';
 import 'package:ara/views/profile.dart';
-import 'package:ara/views/search.dart';
+import 'package:ara/views/search/search_page.dart';
 import 'package:flutter/material.dart';
 
 class Routes {

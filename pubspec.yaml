@@ -32,6 +32,9 @@ dependencies:
   # Redux
   flutter_redux: ^0.7.0
   redux: ^4.0.0+3
+  # Map
+  flutter_map: any
+  flutter_map_marker_popup: ^0.1.4
 
 
   # The following adds the Cupertino Icons font to your application.
