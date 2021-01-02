@@ -2,8 +2,14 @@ class Badge implements Comparable {
   String id;
   String name;
   String imageUrl;
+  String description;
 
-  Badge({this.id, this.name, this.imageUrl});
+  Badge({
+    this.id,
+    this.name,
+    this.imageUrl,
+    this.description,
+  });
 
   @override
   int compareTo(dynamic b) {

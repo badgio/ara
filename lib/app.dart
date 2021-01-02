@@ -30,6 +30,7 @@ class _BadgioAppState extends State<BadgioApp> {
     Routes.home: GlobalKey<NavigatorState>(),
     Routes.search: GlobalKey<NavigatorState>(),
     Routes.collections: GlobalKey<NavigatorState>(),
+    Routes.badge: GlobalKey<NavigatorState>(),
     Routes.you: GlobalKey<NavigatorState>(),
   };
   final userRepository = UserRepository(FirebaseAuth.instance);
@@ -49,7 +50,12 @@ class _BadgioAppState extends State<BadgioApp> {
             collectionRepository,
             _navigatorKeys,
           ),
+      )..addAll(
+        createBadgesMiddleware(
+          collectionRepository,
+          _navigatorKeys,
         ),
+      ),
     );
     store.dispatch(VerifyAuthenticationStateAction());
   }

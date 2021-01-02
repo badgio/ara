@@ -1,6 +1,6 @@
 import 'package:ara/models/badge.dart';
 
-class Collection {
+class Collection implements Comparable {
   String id;
   String name;
   String imageUrl;
@@ -22,5 +22,13 @@ class Collection {
   @override
   String toString() {
     return "Collection{id: $id, name: $name, descrption: $description}";
+  }
+
+  @override
+  int compareTo(dynamic c) {
+    if (c is Collection)
+      return c.name.compareTo(this.name);
+    else
+      return 0;
   }
 }

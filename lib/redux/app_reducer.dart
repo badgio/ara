@@ -8,4 +8,5 @@ final appReducer = combineReducers<AppState>([
   authReducers,
   navReducers,
   colReducers,
+  bReducers,
 ]);
