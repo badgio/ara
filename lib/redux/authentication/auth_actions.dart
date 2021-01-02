@@ -40,6 +40,48 @@ class SignInFailureAction {
   }
 }
 
+class SignUpAction {
+  final String email;
+  final String password;
+  final String name;
+  final String birthDate;
+  final String country;
+  final String city;
+  final String gender;
+  final Completer completer;
+
+  SignUpAction({
+    this.email,
+    this.password,
+    this.name,
+    this.birthDate,
+    this.country,
+    this.city,
+    this.gender,
+    completer,
+  }) : completer = completer ?? Completer();
+
+  @override
+  String toString() {
+    return 'SignUp{email: $email, password: $password, name: $name, birthDate: $birthDate, country: $country, city: $city, gender: $gender}';
+  }
+}
+
+class StartSignUpAction {
+  final String email;
+  final String password;
+
+  StartSignUpAction({
+    this.email,
+    this.password,
+  });
+
+  @override
+  String toString() {
+    return 'StartSignUp{email: $email, password: $password';
+  }
+}
+
 class SignOutAction {}
 
 class SignOutSuccessAction {}

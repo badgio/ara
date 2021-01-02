@@ -4,6 +4,7 @@ import 'package:ara/redux/collections/collections_middleware.dart';
 import 'package:ara/repositories/collection_repository.dart';
 import 'package:ara/repositories/user_repository.dart';
 import 'package:ara/views/main_screen.dart';
+import 'package:ara/views/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -66,6 +67,9 @@ class _BadgioAppState extends State<BadgioApp> {
         routes: {
           Routes.signIn: (context) {
             return SignInPage();
+          },
+          Routes.signUp: (context) {
+            return SignUpPage();
           },
           Routes.home: (context) {
             return MainScreen(navigatorKeys: _navigatorKeys);

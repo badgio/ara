@@ -35,6 +35,8 @@ dependencies:
   # Map
   flutter_map: any
   flutter_map_marker_popup: ^0.1.4
+  # Http requests
+  http: ^0.12.2
 
 
   # The following adds the Cupertino Icons font to your application.
