@@ -134,8 +134,8 @@ class CollectionsPageProfile extends StatelessWidget {
               SliverToBoxAdapter(
                 child: TabBar(
                   tabs: [
-                    Tab(child: Text('Coleções', style: TextStyle(color: Colors.black))),
-                    Tab(child: Text('Amigos', style: TextStyle(color: Colors.black))),
+                    Tab(child: Text('Collections', style: TextStyle(color: Colors.black))),
+                    Tab(child: Text('Friends', style: TextStyle(color: Colors.black))),
                   ],
                 ),
               ),
@@ -211,7 +211,7 @@ class CollectionsPageProfile extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 10),
             child: Text(
-              "Coleções completas",
+              "Completed Collections",
               style: Theme.of(context).textTheme.headline5,
               softWrap: true,
               textAlign: TextAlign.center,
@@ -225,7 +225,7 @@ class CollectionsPageProfile extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 20),
             child: Text(
-              "Recompensas ganhas",
+              "Total Rewards",
               style: Theme.of(context).textTheme.headline5,
               softWrap: true,
               textAlign: TextAlign.center,
