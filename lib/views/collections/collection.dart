@@ -1,5 +1,6 @@
 import 'package:ara/models/badge.dart';
 import 'package:ara/models/collection.dart';
+import 'package:ara/redux/collections/collections_actions.dart';
 import 'package:ara/models/mobile_user.dart';
 import 'package:ara/redux/app_state.dart';
 import 'package:flutter/gestures.dart';
@@ -21,7 +22,7 @@ class CollectionView extends StatelessWidget {
               indent: 60,
               endIndent: 60,
             ),
-            _buildBadgeList(vm.col.badges),
+            _buildBadgeList(vm.col.badges, context),
           ],
         );
       },
@@ -30,19 +31,19 @@ class CollectionView extends StatelessWidget {
     );
   }
 
-  Widget _buildBadgeList(Set<Badge> badges) {
+  Widget _buildBadgeList(Set<Badge> badges, BuildContext context) {
     return Column(
       children: [
         _InfoBar(),
         Padding(
           padding: EdgeInsets.only(bottom: 20, top: 10, left: 10, right: 10),
-          child: _buildBadgeGrid(badges),
+          child: _buildBadgeGrid(badges, context),
         ),
       ],
     );
   }
 
-  Widget _buildBadgeGrid(Set<Badge> badges) {
+  Widget _buildBadgeGrid(Set<Badge> badges, BuildContext context) {
     List<ConstrainedBox> avatars = List();
     for (Badge badge in badges) {
       avatars.add(
@@ -50,20 +51,28 @@ class CollectionView extends StatelessWidget {
           constraints: BoxConstraints.tightFor(
             width: 80,
           ),
-          child: Column(
-            children: [
-              CircleAvatar(
-                radius: 40,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 5),
-                child: Text(
-                  badge.name,
-                  softWrap: true,
-                  textAlign: TextAlign.center,
+          child: FlatButton(
+            onPressed: () {
+              StoreProvider.of<AppState>(context)
+                  .dispatch(OpenBadgeAction(badgeId: badge.id));
+            },
+            padding: EdgeInsets.all(0.0),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(badge.imageUrl),
+                  radius: 40,
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Text(
+                    badge.name,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -217,7 +226,7 @@ class _InfoBarState extends State<_InfoBar> {
 }
 
 class _CollectionViewModel {
-  Collection col;
+  final Collection col;
   MobileUser user;
 
   _CollectionViewModel({this.col, this.user});

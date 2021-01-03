@@ -43,3 +43,42 @@ Middleware<AppState> _openCollection(
     });
   };
 }
+
+List<Middleware<AppState>> createBadgesMiddleware(
+    CollectionRepository collectionRepository,
+    Map<String, GlobalKey<NavigatorState>> navigatorKeys,
+    ) {
+  final loadAll = _loadBadges(collectionRepository, navigatorKeys);
+  final openBadge = _openBadge(collectionRepository, navigatorKeys);
+  return [
+    TypedMiddleware<AppState, LoadBadgesAction>(loadAll),
+    TypedMiddleware<AppState, OpenBadgeAction>(openBadge),
+  ];
+}
+
+Middleware<AppState> _loadBadges(
+    CollectionRepository repo,
+    Map<String, GlobalKey<NavigatorState>> navKey,
+    ) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+
+    return null;
+  };
+}
+
+Middleware<AppState> _openBadge(
+    CollectionRepository repo,
+    Map<String, GlobalKey<NavigatorState>> navKey,
+    ) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+
+    repo.getBadge(action.badgeId).then((badge) {
+      store.dispatch(BadgeLoadedAction(badge: badge));
+      navKey[Routes.getTabRouteByIndex(store.state.navSelectedIndex)]
+          .currentState
+          .pushNamed(Routes.badge);
+    });
+  };
+}

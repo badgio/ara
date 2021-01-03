@@ -49,7 +49,12 @@ class _BadgioAppState extends State<BadgioApp> {
             collectionRepository,
             _navigatorKeys,
           ),
+      )..addAll(
+        createBadgesMiddleware(
+          collectionRepository,
+          _navigatorKeys,
         ),
+      ),
     );
     store.dispatch(VerifyAuthenticationStateAction());
   }
