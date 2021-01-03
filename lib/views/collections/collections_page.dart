@@ -68,7 +68,7 @@ class CollectionsPage extends StatelessWidget {
       CollectionPreview(
         id: "c4",
         title: "Collection D",
-        badges: badges,
+        badges: badges2,
       ),
       CollectionPreview(
         id: "c5",
@@ -156,23 +156,30 @@ class CollectionPreview extends StatelessWidget {
   Widget _buildBadge(BuildContext context, Badge b) {
     return Expanded(
       flex: 4,
-      child: Column(
-        children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(b.imageUrl),
-            radius: 36,
+        child: FlatButton(
+          onPressed: () {
+            StoreProvider.of<AppState>(context)
+              .dispatch(OpenBadgeAction(badgeId: b.id));
+          },
+          padding: EdgeInsets.all(0.0),
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(b.imageUrl),
+                radius: 36,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 5),
+                child: Text(
+                  b.name,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 5),
-            child: Text(
-              b.name,
-              style: Theme.of(context).textTheme.bodyText2,
-              softWrap: true,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
+        ),
     );
   }
 }
