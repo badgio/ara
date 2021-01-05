@@ -10,6 +10,7 @@ AppState _openCollection(AppState state, CollectionLoadedAction action) {
   return AppState(
     navSelectedIndex: state.navSelectedIndex,
     user: state.user,
+    selectedBadge: state.selectedBadge,
     selectedCollection: action.collection,
   );
 }
@@ -23,5 +24,6 @@ AppState _openBadge(AppState state, BadgeLoadedAction action) {
     navSelectedIndex: state.navSelectedIndex,
     user: state.user,
     selectedBadge: action.badge,
+    selectedCollection: state.selectedCollection,
   );
 }
