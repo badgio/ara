@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 class Routes {
   static const home = "/home";
   static const signIn = "/signin";
+  static const signUp = "/signup";
   static const collection = "/collection";
   static const collections = "/collections";
   static const search = "/search";

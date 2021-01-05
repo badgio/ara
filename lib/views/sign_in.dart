@@ -1,5 +1,6 @@
 import 'package:ara/redux/authentication/auth_actions.dart';
 import 'package:ara/redux/app_state.dart';
+import 'package:ara/routes.dart';
 import 'package:ara/views/common/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ara/validators/auth_validators.dart';
@@ -70,11 +71,33 @@ class _SignInFormState extends State<_SignInForm> {
       }
     };
 
+    final signUpCallback = () {
+      //if (_formKey.currentState.validate()) {
+      // Hide keyboard when validating
+      FocusScope.of(context).unfocus();
+
+      String email = _emailController.text;
+      String password = _passwordController.text;
+      _passwordController.clear();
+      final StartSignUpAction signUp =
+          StartSignUpAction(email: email, password: password);
+
+      StoreProvider.of<AppState>(context).dispatch(signUp);
+      //}
+    };
+
     final signInButton = RaisedButton(
-      child: Text('Sign-in',
+      child: Text('Sign in',
           style: TextStyle(color: Theme.of(context).backgroundColor)),
       color: Theme.of(context).primaryColor,
       onPressed: signInCallback,
+    );
+
+    final signUpButton = RaisedButton(
+      child: Text('Create new account',
+          style: TextStyle(color: Theme.of(context).backgroundColor)),
+      color: Theme.of(context).primaryColor,
+      onPressed: signUpCallback,
     );
 
     final email = TextFormField(
@@ -98,7 +121,7 @@ class _SignInFormState extends State<_SignInForm> {
     return Form(
       key: _formKey,
       child: Column(
-        children: [email, pass, signInButton],
+        children: [email, pass, signInButton, signUpButton],
       ),
     );
   }
