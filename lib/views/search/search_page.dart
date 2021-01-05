@@ -29,7 +29,7 @@ class _SearchBar extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          print("Go to search!"); // TODO
+          showSearch(context: context, delegate: DataSearch());
         },
         child: Container(
           height: 44,
@@ -73,6 +73,91 @@ class _SearchBar extends StatelessWidget {
   }
 }
 
+class DataSearch extends SearchDelegate<String>{
+
+  //hardcoded places
+  final places = [
+    "Museu dos Biscainhos",
+    "Sé de Braga",
+    "Igreja dos Terceiros",
+    "Igreja dos Congregados",
+    "Museu D. Diogo de Sousa",
+    "Igreja do Carmo",
+    "Restaurante do Padrinho do Zé",
+    "Avenida Central",
+    "Universidade do Minho",
+    "Restaurante 'Cozinha da Sé'"
+  ];
+
+  //hardcoded recent places
+  final recentPlaces = [
+    "Igreja do Carmo",
+    "Restaurante do Padrinho do Zé",
+    "Avenida Central",
+    "Sé de Braga"
+  ];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    //actions for clear text button
+    return [IconButton(icon: Icon(Icons.clear), onPressed: () {
+      query = "";
+    })];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    //leading icon on the left of the app bar
+    return IconButton(
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,
+        ),
+        onPressed: (){
+          close(context, null);
+        });
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    //show result on the map based on the selection TODO
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    //show when someone searches for something
+    final suggestionList = query.isEmpty
+        ? recentPlaces
+        : places.where((p) => p.startsWith(query)).toList();
+
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {
+          showResults(context);
+        },
+        leading: Icon(Icons.location_city),
+        title: RichText(
+          text: TextSpan(
+            text: suggestionList[index].substring(0,query.length),
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold
+            ),
+            children: [
+              TextSpan(
+                text: suggestionList[index].substring(query.length),
+                style: TextStyle(
+                    color: Colors.grey,
+                ),
+              ),
+            ]
+          ),
+        ),
+      ),
+      itemCount: suggestionList.length,
+    );
+  }
+}
 class _Map extends StatefulWidget {
   _Map({Key key}) : super(key: key);
 
