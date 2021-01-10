@@ -1,9 +1,11 @@
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/redux/authentication/auth_actions.dart';
 import 'package:ara/redux/collections/collections_middleware.dart';
+import 'package:ara/redux/redeem/redeem_middleware.dart';
 import 'package:ara/repositories/collection_repository.dart';
 import 'package:ara/repositories/user_repository.dart';
 import 'package:ara/views/main_screen.dart';
+import 'package:ara/views/redeem.dart';
 import 'package:ara/views/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +34,7 @@ class _BadgioAppState extends State<BadgioApp> {
     Routes.search: GlobalKey<NavigatorState>(),
     Routes.collections: GlobalKey<NavigatorState>(),
     Routes.you: GlobalKey<NavigatorState>(),
+    Routes.redeem: GlobalKey<NavigatorState>(),
   };
   final userRepository = UserRepository(FirebaseAuth.instance);
   final collectionRepository = CollectionRepository();
@@ -45,17 +48,25 @@ class _BadgioAppState extends State<BadgioApp> {
       middleware: createAuthMiddleware(
         userRepository,
         _navigatorKeys[Routes.signIn],
-      )..addAll(
+      )
+        ..addAll(
           createCollectionsMiddleware(
             collectionRepository,
             _navigatorKeys,
           ),
-      )..addAll(
-        createBadgesMiddleware(
-          collectionRepository,
-          _navigatorKeys,
+        )
+        ..addAll(
+          createBadgesMiddleware(
+            collectionRepository,
+            _navigatorKeys,
+          ),
+        )
+        ..addAll(
+          createRedeemMiddleware(
+            collectionRepository,
+            _navigatorKeys,
+          ),
         ),
-      ),
     );
     store.dispatch(VerifyAuthenticationStateAction());
   }
@@ -78,7 +89,10 @@ class _BadgioAppState extends State<BadgioApp> {
           },
           Routes.home: (context) {
             return MainScreen(navigatorKeys: _navigatorKeys);
-          }
+          },
+          Routes.redeem: (context) {
+            return RedeemPage();
+          },
         },
       ),
     );

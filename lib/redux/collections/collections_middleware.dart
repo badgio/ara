@@ -45,9 +45,9 @@ Middleware<AppState> _openCollection(
 }
 
 List<Middleware<AppState>> createBadgesMiddleware(
-    CollectionRepository collectionRepository,
-    Map<String, GlobalKey<NavigatorState>> navigatorKeys,
-    ) {
+  CollectionRepository collectionRepository,
+  Map<String, GlobalKey<NavigatorState>> navigatorKeys,
+) {
   final loadAll = _loadBadges(collectionRepository, navigatorKeys);
   final openBadge = _openBadge(collectionRepository, navigatorKeys);
   return [
@@ -57,9 +57,9 @@ List<Middleware<AppState>> createBadgesMiddleware(
 }
 
 Middleware<AppState> _loadBadges(
-    CollectionRepository repo,
-    Map<String, GlobalKey<NavigatorState>> navKey,
-    ) {
+  CollectionRepository repo,
+  Map<String, GlobalKey<NavigatorState>> navKey,
+) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
 
@@ -68,9 +68,9 @@ Middleware<AppState> _loadBadges(
 }
 
 Middleware<AppState> _openBadge(
-    CollectionRepository repo,
-    Map<String, GlobalKey<NavigatorState>> navKey,
-    ) {
+  CollectionRepository repo,
+  Map<String, GlobalKey<NavigatorState>> navKey,
+) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
 

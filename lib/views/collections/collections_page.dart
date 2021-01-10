@@ -11,43 +11,43 @@ class CollectionsPage extends StatelessWidget {
     badges.add(Badge(
       id: "b1",
       name: "Tasca do Miguel",
-      imageUrl: "https://bit.ly/33TaWHw",
+      image: "https://bit.ly/33TaWHw",
     ));
     badges.add(Badge(
       id: "b2",
       name: "Rodízio do Diogo",
-      imageUrl: "https://bit.ly/37KiWf5",
+      image: "https://bit.ly/37KiWf5",
     ));
     badges.add(Badge(
       id: "b3",
       name: "Cupcakes da Rafaela",
-      imageUrl: "https://bit.ly/2JKBeoy",
+      image: "https://bit.ly/2JKBeoy",
     ));
     badges.add(Badge(
       id: "b4",
       name: "Panados do Luís",
-      imageUrl: "https://bit.ly/2VSdIIQ",
+      image: "https://bit.ly/2VSdIIQ",
     ));
     List<Badge> badges2 = List();
     badges2.add(Badge(
       id: "b4",
       name: "Panados do Luís",
-      imageUrl: "https://bit.ly/2VSdIIQ",
+      image: "https://bit.ly/2VSdIIQ",
     ));
     badges2.add(Badge(
       id: "b5",
       name: "Ponchas do Francisco",
-      imageUrl: "https://bit.ly/39QgmGW",
+      image: "https://bit.ly/39QgmGW",
     ));
     badges2.add(Badge(
       id: "b6",
       name: "Coxinhas do André",
-      imageUrl: "https://bit.ly/2W4SbNb",
+      image: "https://bit.ly/2W4SbNb",
     ));
     badges2.add(Badge(
       id: "b7",
       name: "Franguinho à José",
-      imageUrl: "https://bit.ly/3lUdATx",
+      image: "https://bit.ly/3lUdATx",
     ));
     List<Widget> previews = [
       CollectionPreview(
@@ -156,30 +156,30 @@ class CollectionPreview extends StatelessWidget {
   Widget _buildBadge(BuildContext context, Badge b) {
     return Expanded(
       flex: 4,
-        child: FlatButton(
-          onPressed: () {
-            StoreProvider.of<AppState>(context)
+      child: FlatButton(
+        onPressed: () {
+          StoreProvider.of<AppState>(context)
               .dispatch(OpenBadgeAction(badgeId: b.id));
-          },
-          padding: EdgeInsets.all(0.0),
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(b.imageUrl),
-                radius: 36,
+        },
+        padding: EdgeInsets.all(0.0),
+        child: Column(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(b.image),
+              radius: 36,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Text(
+                b.name,
+                style: Theme.of(context).textTheme.bodyText2,
+                softWrap: true,
+                textAlign: TextAlign.center,
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 5),
-                child: Text(
-                  b.name,
-                  style: Theme.of(context).textTheme.bodyText2,
-                  softWrap: true,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }

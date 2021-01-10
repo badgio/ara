@@ -1,13 +1,13 @@
 class Badge implements Comparable {
   String id;
   String name;
-  String imageUrl;
+  String image;
   String description;
 
   Badge({
     this.id,
     this.name,
-    this.imageUrl,
+    this.image,
     this.description,
   });
 

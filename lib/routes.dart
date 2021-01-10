@@ -2,6 +2,7 @@ import 'package:ara/views/collections/collection.dart';
 import 'package:ara/views/collections/collections_page.dart';
 import 'package:ara/views/home.dart';
 import 'package:ara/views/profile.dart';
+import 'package:ara/views/redeem.dart';
 import 'package:ara/views/search/search_page.dart';
 import 'package:ara/views/badge.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class Routes {
   static const search = "/search";
   static const badge = "/badge";
   static const you = "/you";
+  static const redeem = "/redeem";
 
   static Route<dynamic> generateMainScreenRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -36,6 +38,9 @@ class Routes {
       case you:
         final page = CollectionsPageProfile();
         return MaterialPageRoute(builder: (context) => page);
+      case redeem:
+        final page = RedeemPage();
+        return MaterialPageRoute(builder: (context) => page);
       default:
         return null;
     }
@@ -51,6 +56,8 @@ class Routes {
         return collections;
       case 3:
         return you;
+      case 4:
+        return redeem;
       default:
         return home;
     }

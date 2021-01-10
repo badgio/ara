@@ -13,50 +13,57 @@ class CollectionRepository {
     Badge b1 = Badge(
       id: "b1",
       name: "Tasca do Miguel",
-      imageUrl: "https://bit.ly/33TaWHw",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+      image: "https://bit.ly/33TaWHw",
+      description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
     );
     _badges.add(b1);
     Badge b2 = Badge(
       id: "b2",
       name: "Rodízio do Diogo",
-      imageUrl: "https://bit.ly/37KiWf5",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+      image: "https://bit.ly/37KiWf5",
+      description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
     );
     _badges.add(b2);
     Badge b3 = Badge(
       id: "b3",
       name: "Cupcakes da Rafaela",
-      imageUrl: "https://bit.ly/2JKBeoy",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+      image: "https://bit.ly/2JKBeoy",
+      description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
     );
     _badges.add(b3);
     Badge b4 = Badge(
       id: "b4",
       name: "Panados do Luís",
-      imageUrl: "https://bit.ly/2VSdIIQ",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+      image: "https://bit.ly/2VSdIIQ",
+      description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
     );
     _badges.add(b4);
     Badge b5 = Badge(
       id: "b5",
       name: "Ponchas do Francisco",
-      imageUrl: "https://bit.ly/39QgmGW",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+      image: "https://bit.ly/39QgmGW",
+      description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
     );
     _badges.add(b5);
     Badge b6 = Badge(
       id: "b6",
       name: "Coxinhas do André",
-      imageUrl: "https://bit.ly/2W4SbNb",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+      image: "https://bit.ly/2W4SbNb",
+      description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
     );
     _badges.add(b6);
     Badge b7 = Badge(
       id: "b7",
       name: "Franguinho à José",
-      imageUrl: "https://bit.ly/3lUdATx",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+      image: "https://bit.ly/3lUdATx",
+      description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
     );
     _badges.add(b7);
     Set<Badge> s1 = SplayTreeSet<Badge>();
@@ -73,7 +80,7 @@ class CollectionRepository {
       id: "c1",
       name: "Badgio Cool 2021",
       description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
       badges: s1,
     );
     _collections.add(c1);
@@ -81,7 +88,7 @@ class CollectionRepository {
       id: "c2",
       name: "Collection B",
       description:
-      "Lorem ipsum dolor sit consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+          "Lorem ipsum dolor sit consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
       badges: s2,
     );
     _collections.add(c2);
@@ -89,7 +96,7 @@ class CollectionRepository {
       id: "c3",
       name: "Collection C",
       description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
       badges: s1,
     );
     _collections.add(c3);
@@ -97,7 +104,7 @@ class CollectionRepository {
       id: "c4",
       name: "Collection D",
       description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
       badges: s2,
     );
     _collections.add(c4);
@@ -105,7 +112,7 @@ class CollectionRepository {
       id: "c5",
       name: "Collection E",
       description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fringilla purus ut tortor pharetra blandit. Pellentesque vitae lorem vestibulum, maximus ex a, blandit mauris.",
       badges: s1,
     );
     _collections.add(c5);
@@ -125,5 +132,9 @@ class CollectionRepository {
 
   Future<Set<Badge>> getAllBadges() async {
     return await Future(() => _badges);
+  }
+
+  void addBadge(Badge badge) {
+    _badges.add(badge);
   }
 }

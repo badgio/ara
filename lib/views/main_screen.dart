@@ -1,4 +1,5 @@
 import 'package:ara/redux/app_state.dart';
+import 'package:ara/redux/navigation/navigation_actions.dart';
 import 'package:ara/routes.dart';
 import 'package:ara/views/common/app_bar.dart';
 import 'package:ara/views/bottom_bar.dart';
@@ -50,8 +51,8 @@ class _MainScreenState extends State<MainScreen> {
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => RedeemPage()));
+                StoreProvider.of<AppState>(context)
+                    .dispatch(BottomBarIndexUpdateAction(newIndex: 4));
               },
               child: Icon(Icons.add),
               elevation: 2.0,
@@ -101,6 +102,13 @@ class _MainScreenState extends State<MainScreen> {
         onGenerateRoute: Routes.generateMainScreenRoute,
       ),
     );
+    pageList.add(
+      Navigator(
+        key: widget.navigatorKeys[Routes.redeem],
+        initialRoute: Routes.redeem,
+        onGenerateRoute: Routes.generateMainScreenRoute,
+      ),
+    );
     return IndexedStack(
       index: vm.barSelectedIndex,
       children: pageList,
@@ -117,6 +125,8 @@ class _MainScreenState extends State<MainScreen> {
         return "Collections";
       case 3:
         return "Profile";
+      case 4:
+        return "Redeem";
     }
     return "Oops";
   }

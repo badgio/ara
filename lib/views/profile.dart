@@ -11,43 +11,43 @@ class CollectionsPageProfile extends StatelessWidget {
     badges.add(Badge(
       id: "b1",
       name: "Tasca do Miguel",
-      imageUrl: "https://bit.ly/33TaWHw",
+      image: "https://bit.ly/33TaWHw",
     ));
     badges.add(Badge(
       id: "b2",
       name: "Rodízio do Diogo",
-      imageUrl: "https://bit.ly/37KiWf5",
+      image: "https://bit.ly/37KiWf5",
     ));
     badges.add(Badge(
       id: "b3",
       name: "Cupcakes da Rafaela",
-      imageUrl: "https://bit.ly/2JKBeoy",
+      image: "https://bit.ly/2JKBeoy",
     ));
     badges.add(Badge(
       id: "b4",
       name: "Panados do Luís",
-      imageUrl: "https://bit.ly/2VSdIIQ",
+      image: "https://bit.ly/2VSdIIQ",
     ));
     List<Badge> badges2 = List();
     badges2.add(Badge(
       id: "b4",
       name: "Panados do Luís",
-      imageUrl: "https://bit.ly/2VSdIIQ",
+      image: "https://bit.ly/2VSdIIQ",
     ));
     badges2.add(Badge(
       id: "b5",
       name: "Ponchas do Francisco",
-      imageUrl: "https://bit.ly/39QgmGW",
+      image: "https://bit.ly/39QgmGW",
     ));
     badges2.add(Badge(
       id: "b6",
       name: "Coxinhas do André",
-      imageUrl: "https://bit.ly/2W4SbNb",
+      image: "https://bit.ly/2W4SbNb",
     ));
     badges2.add(Badge(
       id: "b7",
       name: "Franguinho à José",
-      imageUrl: "https://bit.ly/3lUdATx",
+      image: "https://bit.ly/3lUdATx",
     ));
     List<Widget> previews = [
       CollectionPreviewProfile(
@@ -115,32 +115,36 @@ class CollectionsPageProfile extends StatelessWidget {
       ),
     ];
     return Padding(
-      padding: EdgeInsets.only(),
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          body: CustomScrollView(
-            slivers: <Widget>[
-              SliverToBoxAdapter(
-                child: SafeArea(
-                  child: Row(
-                    children: [
-                      _buildMyInfo(context),
-                      _buildMetrics(context),
+        padding: EdgeInsets.only(),
+        child: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            body: CustomScrollView(
+              slivers: <Widget>[
+                SliverToBoxAdapter(
+                  child: SafeArea(
+                    child: Row(
+                      children: [
+                        _buildMyInfo(context),
+                        _buildMetrics(context),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: TabBar(
+                    tabs: [
+                      Tab(
+                          child: Text('Collections',
+                              style: TextStyle(color: Colors.black))),
+                      Tab(
+                          child: Text('Friends',
+                              style: TextStyle(color: Colors.black))),
                     ],
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: TabBar(
-                  tabs: [
-                    Tab(child: Text('Collections', style: TextStyle(color: Colors.black))),
-                    Tab(child: Text('Friends', style: TextStyle(color: Colors.black))),
-                  ],
-                ),
-              ),
-              SliverFillRemaining(
-                child: TabBarView(
+                SliverFillRemaining(
+                  child: TabBarView(
                     children: [
                       ListView.builder(
                         shrinkWrap: true,
@@ -157,13 +161,12 @@ class CollectionsPageProfile extends StatelessWidget {
                         },
                       ),
                     ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 
   Widget _buildMyInfo(BuildContext context) {
@@ -271,7 +274,6 @@ class CollectionPreviewProfile extends StatelessWidget {
         right: 20,
         top: 10,
       ),
-
       child: Column(
         children: [
           Row(
@@ -337,7 +339,7 @@ class CollectionPreviewProfile extends StatelessWidget {
         child: Column(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(b.imageUrl),
+              backgroundImage: NetworkImage(b.image),
               radius: 36,
             ),
             Padding(
@@ -365,7 +367,14 @@ class FriendPreviewProfile extends StatelessWidget {
   final int nrCollections;
   final int nrRewards;
 
-  FriendPreviewProfile({this.id, this.name, this.city, this.country, this.nrBadges, this.nrCollections, this.nrRewards});
+  FriendPreviewProfile(
+      {this.id,
+      this.name,
+      this.city,
+      this.country,
+      this.nrBadges,
+      this.nrCollections,
+      this.nrRewards});
 
   @override
   Widget build(BuildContext context) {
@@ -377,37 +386,35 @@ class FriendPreviewProfile extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
+          Row(children: [
+            CircleAvatar(
+              radius: 20,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                right: 10,
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 10,
-                ),
+            ),
+            _buildName(context),
+            Text(
+              nrCollections.toString(),
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                right: 60,
               ),
-              _buildName(context),
-              Text(
-                nrCollections.toString(),
-                style: Theme.of(context).textTheme.headline6,
+            ),
+            Text(
+              nrBadges.toString(),
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                right: 10,
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 60,
-                ),
-              ),
-              Text(
-                nrBadges.toString(),
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 10,
-                ),
-              ),
-            ]
-          ),
+            ),
+          ]),
           Padding(
             padding: EdgeInsets.only(
               bottom: 15,
@@ -415,7 +422,6 @@ class FriendPreviewProfile extends StatelessWidget {
           ),
         ],
       ),
-
     );
   }
 

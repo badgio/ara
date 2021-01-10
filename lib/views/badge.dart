@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:ara/models/badge.dart';
 import 'package:ara/models/mobile_user.dart';
 import 'package:ara/redux/app_state.dart';
@@ -27,8 +28,8 @@ class BadgeView extends StatelessWidget {
               bottom: 10,
             ),
             child: CircleAvatar(
-                backgroundImage: NetworkImage(vm.b.imageUrl) ?? '',
-                radius: 100,
+              backgroundImage: MemoryImage(base64Decode(vm.b.image)) ?? '',
+              radius: 100,
             ),
           ),
           Padding(

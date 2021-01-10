@@ -60,7 +60,7 @@ class CollectionView extends StatelessWidget {
             child: Column(
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(badge.imageUrl),
+                  backgroundImage: NetworkImage(badge.image),
                   radius: 40,
                 ),
                 Padding(

@@ -35,9 +35,9 @@ dependencies:
   # Map
   flutter_map: any
   flutter_map_marker_popup: ^0.1.4
-  # Http requests
+  nfc_in_flutter: ^2.0.5
+  #HTTP
   http: ^0.12.2
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -52,6 +52,7 @@ flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/icon/icon.png"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
