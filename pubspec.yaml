@@ -35,6 +35,8 @@ dependencies:
   # Map
   flutter_map: any
   flutter_map_marker_popup: ^0.1.4
+  percent_indicator: ^2.1.7+2
+  # Http requests
   nfc_in_flutter: ^2.0.5
   #HTTP
   http: ^0.12.2
