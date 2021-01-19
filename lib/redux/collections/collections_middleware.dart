@@ -1,9 +1,123 @@
+import 'dart:io';
+import 'package:ara/configuration.dart';
+import 'package:ara/models/badge.dart';
+import 'package:ara/models/collection.dart';
 import 'package:ara/repositories/collection_repository.dart';
 import 'package:ara/redux/collections/collections_actions.dart';
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
+List<Middleware<AppState>> createImportDataMiddleware(
+  CollectionRepository collectionRepository,
+  Map<String, GlobalKey<NavigatorState>> navigatorKeys,
+) {
+  final importData = _importData(collectionRepository, navigatorKeys);
+  return [
+    TypedMiddleware<AppState, ImportDataAction>(importData),
+  ];
+}
+
+Future<dynamic> getData(String path, String token) async {
+  final http.Response response = await http.get(
+    Configuration.BASE_API_URL + path,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: token,
+    },
+  );
+  if (response.statusCode == 200) {
+    return convert.jsonDecode(response.body);
+  } else {
+    print(response.statusCode);
+    return null;
+  }
+}
+
+Middleware<AppState> _importData(
+  CollectionRepository repo,
+  Map<String, GlobalKey<NavigatorState>> navKey,
+) {
+  return (Store store, action, NextDispatcher next) async {
+    next(action);
+    var mUser = FirebaseAuth.instance.currentUser;
+    var token = await mUser.getIdToken(true);
+    Map<String, Collection> _collections = {};
+    Set<Badge> _badges = {};
+    //get all Collections
+    var col = await getData("/collections", token);
+    for (var i = 0; i < col.length; i++) {
+      var status =
+          await getData("/collections/" + col[i]['uuid'] + "/status", token);
+      _collections.putIfAbsent(
+          col[i]['uuid'],
+          () => Collection(
+                id: col[i]['uuid'],
+                name: col[i]['name'],
+                image: col[i]['image'].substring(22),
+                description: col[i]['description'],
+                badges: {},
+                startDate: DateTime.parse(col[i]['start_date']),
+                endDate: col[i]['end_date'] != null
+                    ? DateTime.parse(col[i]['end_date'])
+                    : null,
+                status: status['collection_status'].toDouble(),
+                redeemedBadges: status['collected_badges'].cast<String>(),
+                reward: col[i]['reward'],
+              ));
+    }
+    //get All badges
+    var badges = await getData("/badges", token);
+    for (var i = 0; i < badges.length; i++) {
+      var badgeCol =
+          await getData("/collections?badge=" + badges[i]['uuid'], token);
+      Set<String> collec = {};
+      for (int i = 0; i < badgeCol.length; i++) {
+        collec.add(badgeCol[i]['uuid']);
+      }
+      var redeemed = _collections[badgeCol[0]['uuid']]
+          .redeemedBadges
+          .contains(badges[0]['uuid']);
+      var badge = Badge(
+        id: badges[i]['uuid'],
+        description: badges[i]['description'],
+        name: badges[i]['name'],
+        image: badges[i]['image'].substring(22),
+        redeemed: redeemed,
+        collections: collec,
+      );
+      for (var u = 0; u < badgeCol.length; u++) {
+        var collection = _collections[badgeCol[u]['uuid']];
+        collection.badges.add(badge);
+        _badges.add(badge);
+      }
+    }
+    //get time Limited
+    String end = new DateTime(
+            DateTime.now().year,
+            DateTime.now().month + 1,
+            DateTime.now().day,
+            DateTime.now().hour,
+            DateTime.now().minute,
+            DateTime.now().second)
+        .toIso8601String();
+    var endDate = Uri.encodeComponent(end);
+    List<dynamic> tl =
+        await getData("/collections/?end_date__lt=" + endDate, token);
+    Set<Collection> timeLimited = {};
+    for (var i = 0; i < tl.length; i++) {
+      timeLimited.add(_collections[tl[i]['uuid']]);
+    }
+    repo.addCollections(_collections.values.toSet());
+    repo.addBadges(_badges);
+    repo.addTimeLimited(timeLimited);
+    await store.dispatch(LoadCollectionsAction());
+  };
+}
 
 List<Middleware<AppState>> createCollectionsMiddleware(
   CollectionRepository collectionRepository,
@@ -23,8 +137,11 @@ Middleware<AppState> _loadCollections(
 ) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
-
-    return null;
+    var col = await repo.getAllCollections();
+    var timeLimited = await repo.getTimeLimited();
+    if (timeLimited == null) timeLimited = {};
+    await store.dispatch(
+        CollectionsLoadedAction(collections: col, timeLimited: timeLimited));
   };
 }
 

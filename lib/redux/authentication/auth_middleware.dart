@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:ara/configuration.dart';
 import 'package:ara/redux/authentication/auth_actions.dart';
+import 'package:ara/redux/collections/collections_actions.dart';
 import 'package:ara/repositories/user_repository.dart';
 import 'package:ara/routes.dart';
 import 'package:ara/redux/app_state.dart';
@@ -37,6 +37,7 @@ Middleware<AppState> _createSignInMiddleware(
     next(action);
     try {
       final user = await userRepository.signIn(action.email, action.password);
+      await store.dispatch(ImportDataAction());
       store.dispatch(SignInSuccessAction(user: user));
       await navigatorKey.currentState.pushReplacementNamed(Routes.home);
       action.completer.complete();
@@ -111,6 +112,7 @@ Middleware<AppState> _createSignUpMiddleware(
             // if could create user, signIn to firebase
             final user =
                 await userRepository.signIn(action.email, action.password);
+            await store.dispatch(ImportDataAction());
             store.dispatch(SignInSuccessAction(user: user));
             await navigatorKey.currentState.pushReplacementNamed(Routes.home);
             action.completer.complete();

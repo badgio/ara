@@ -18,8 +18,6 @@ class RedeemPageState extends State<RedeemPage> {
   @override
   void initState() {
     NFC.isNDEFSupported.then((bool isSupported) {
-      print("É suportado?");
-      print(isSupported);
       setState(() {
         _supportsNFC = isSupported;
       });

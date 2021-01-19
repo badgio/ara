@@ -1,6 +1,5 @@
 import 'package:ara/redux/authentication/auth_actions.dart';
 import 'package:ara/redux/app_state.dart';
-import 'package:ara/routes.dart';
 import 'package:ara/views/common/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ara/validators/auth_validators.dart';

@@ -7,5 +7,10 @@ final authReducers = combineReducers<AppState>([
 ]);
 
 AppState _signIn(AppState state, SignInSuccessAction action) {
-  return AppState(user: action.user);
+  return AppState(
+    user: action.user,
+    selectedBadge: state.selectedBadge,
+    selectedCollections: state.selectedCollections,
+    timeLimited: state.timeLimited,
+  );
 }

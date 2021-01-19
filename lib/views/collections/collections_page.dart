@@ -1,86 +1,31 @@
 import 'package:ara/models/badge.dart';
+import 'package:ara/models/collection.dart';
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/redux/collections/collections_actions.dart';
+import 'package:ara/views/common/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
 class CollectionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Badge> badges = List();
-    badges.add(Badge(
-      id: "b1",
-      name: "Tasca do Miguel",
-      image: "https://bit.ly/33TaWHw",
-    ));
-    badges.add(Badge(
-      id: "b2",
-      name: "Rodízio do Diogo",
-      image: "https://bit.ly/37KiWf5",
-    ));
-    badges.add(Badge(
-      id: "b3",
-      name: "Cupcakes da Rafaela",
-      image: "https://bit.ly/2JKBeoy",
-    ));
-    badges.add(Badge(
-      id: "b4",
-      name: "Panados do Luís",
-      image: "https://bit.ly/2VSdIIQ",
-    ));
-    List<Badge> badges2 = List();
-    badges2.add(Badge(
-      id: "b4",
-      name: "Panados do Luís",
-      image: "https://bit.ly/2VSdIIQ",
-    ));
-    badges2.add(Badge(
-      id: "b5",
-      name: "Ponchas do Francisco",
-      image: "https://bit.ly/39QgmGW",
-    ));
-    badges2.add(Badge(
-      id: "b6",
-      name: "Coxinhas do André",
-      image: "https://bit.ly/2W4SbNb",
-    ));
-    badges2.add(Badge(
-      id: "b7",
-      name: "Franguinho à José",
-      image: "https://bit.ly/3lUdATx",
-    ));
-    List<Widget> previews = [
-      CollectionPreview(
-        id: "c1",
-        title: "Badgio Cool 2021",
-        badges: badges,
-      ),
-      CollectionPreview(
-        id: "c2",
-        title: "Collection B",
-        badges: badges2,
-      ),
-      CollectionPreview(
-        id: "c3",
-        title: "Collection C",
-        badges: badges,
-      ),
-      CollectionPreview(
-        id: "c4",
-        title: "Collection D",
-        badges: badges2,
-      ),
-      CollectionPreview(
-        id: "c5",
-        title: "Collection E",
-        badges: badges,
-      ),
-    ];
-    return ListView.builder(
-      itemCount: previews.length,
-      itemBuilder: (BuildContext context, int index) {
-        return previews[index];
+    return StoreConnector<AppState, _CollectionsViewModel>(
+      builder: (context, vm) {
+        List<Widget> previews = [];
+        vm.collections.forEach((col) {
+          previews.add(CollectionPreview(
+              id: col.id, title: col.name, badges: col.badges.toList()));
+        });
+        return ListView.builder(
+          itemCount: previews.length,
+          itemBuilder: (BuildContext context, int index) {
+            return previews[index];
+          },
+        );
       },
+      converter: _CollectionsViewModel.fromStore,
+      distinct: true,
     );
   }
 }
@@ -164,9 +109,10 @@ class CollectionPreview extends StatelessWidget {
         padding: EdgeInsets.all(0.0),
         child: Column(
           children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(b.image),
+            GreyImage(
+              badge: b,
               radius: 36,
+              key: key,
             ),
             Padding(
               padding: EdgeInsets.only(top: 5),
@@ -180,6 +126,19 @@ class CollectionPreview extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CollectionsViewModel {
+  final Set<Collection> collections;
+  //MobileUser user;
+
+  _CollectionsViewModel({this.collections});
+
+  static _CollectionsViewModel fromStore(Store<AppState> store) {
+    return _CollectionsViewModel(
+      collections: store.state.selectedCollections,
     );
   }
 }

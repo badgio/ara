@@ -9,20 +9,25 @@ class AppState {
   final int navSelectedIndex;
   final Collection selectedCollection;
   final Badge selectedBadge;
+  final Set<Collection> selectedCollections;
+  final Set<Collection> timeLimited;
 
   AppState({
     this.user,
     this.navSelectedIndex = 0,
     this.selectedCollection,
     this.selectedBadge,
+    this.selectedCollections,
+    this.timeLimited,
   });
 
   factory AppState.init() => AppState(
-        user: null,
-        navSelectedIndex: 0,
-        selectedCollection: new Collection(),
-        selectedBadge: new Badge(),
-      );
+      user: null,
+      navSelectedIndex: 0,
+      selectedCollection: new Collection(),
+      selectedBadge: new Badge(),
+      selectedCollections: {},
+      timeLimited: {});
 
   @override
   String toString() {

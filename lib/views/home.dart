@@ -1,137 +1,43 @@
-import 'package:ara/models/badge.dart';
+import 'dart:convert';
 import 'package:ara/models/collection.dart';
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/redux/collections/collections_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:redux/redux.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Set<Badge> badges = Set();
-    badges.add(Badge(
-      id: "b4",
-      name: "Tasca do Miguel",
-      image: "https://bit.ly/2VSdIIQ",
-    ));
-    badges.add(Badge(
-      id: "b5",
-      name: "Ponchas do Francisco",
-      image: "https://bit.ly/39QgmGW",
-    ));
-    badges.add(Badge(
-      id: "b6",
-      name: "Coxinhas do André",
-      image: "https://bit.ly/2W4SbNb",
-    ));
-    badges.add(Badge(
-      id: "b7",
-      name: "Franguinho à José",
-      image: "https://bit.ly/3lUdATx",
-    ));
-    badges.add(Badge(
-      id: "b8",
-      name: "Pizza",
-      image: "https://bit.ly/3lUdATx",
-    ));
-
-    List<Collection> timeLimited = List();
-    timeLimited.add(Collection(
-      id: "c1",
-      name: "Verde Cool",
-      imageUrl: "https://bit.ly/33TaWHw",
-      badges: badges,
-    ));
-    timeLimited.add(Collection(
-      id: "c2",
-      name: "Tapas de Braga",
-      imageUrl: "https://bit.ly/37KiWf5",
-      badges: badges,
-    ));
-    timeLimited.add(Collection(
-      id: "c3",
-      name: "Rota do Bacalhau",
-      imageUrl: "https://bit.ly/2JKBeoy",
-      badges: badges,
-    ));
-    timeLimited.add(Collection(
-      id: "c4",
-      name: "Rota das Sardinhas",
-      imageUrl: "https://bit.ly/2VSdIIQ",
-      badges: badges,
-    ));
-
-    List<Collection> rewards = List();
-    rewards.add(Collection(
-      id: "r1",
-      name: "Verde Cool 2021",
-      imageUrl: "https://bit.ly/33TaWHw",
-      badges: badges,
-    ));
-    rewards.add(Collection(
-      id: "r2",
-      name: "Igrejas de Braga",
-      imageUrl: "https://bit.ly/37KiWf5",
-      badges: badges,
-    ));
-    rewards.add(Collection(
-      id: "r3",
-      name: "Rota Romana",
-      imageUrl: "https://bit.ly/2JKBeoy",
-      badges: badges,
-    ));
-
-    List<Collection> inProgress = List();
-    inProgress.add(Collection(
-      id: "p1",
-      name: "Igrejas de Mandim",
-      imageUrl: "https://bit.ly/33TaWHw",
-      badges: badges,
-    ));
-    inProgress.add(Collection(
-      id: "p2",
-      name: "Verde Cool 2021",
-      imageUrl: "https://bit.ly/37KiWf5",
-      badges: badges,
-    ));
-    inProgress.add(Collection(
-      id: "p3",
-      name: "Rota do Barroco",
-      imageUrl: "https://bit.ly/2JKBeoy",
-      badges: badges,
-    ));
-    inProgress.add(Collection(
-      id: "p4",
-      name: "Rota do Bacalhau",
-      imageUrl: "https://bit.ly/3lUdATx",
-      badges: badges,
-    ));
-    inProgress.add(Collection(
-      id: "p5",
-      name: "Rota Romana",
-      imageUrl: "https://bit.ly/39QgmGW",
-      badges: badges,
-    ));
-
-    List<Widget> previews = [
-      title(),
-      CollectionsPreview(
-        title: "Time Limited",
-        collections: timeLimited,
-        percentage: false,
-      ),
-      CollectionsPreview(
-        title: "In Progress",
-        collections: inProgress,
-        percentage: true,
-      ),
-    ];
-    return ListView.builder(
-      itemCount: previews.length,
-      itemBuilder: (BuildContext context, int index) {
-        return previews[index];
+    return StoreConnector<AppState, _HomeViewModel>(
+      builder: (context, vm) {
+        List<Collection> inProgress = [];
+        vm.collections.forEach((collection) {
+          if (collection.status > 0 && collection.status < 1) {
+            inProgress.add(collection);
+          }
+        });
+        List<Widget> previews = [
+          title(),
+          vm.timeLimited.isNotEmpty
+              ? CollectionsPreview(
+                  title: "Time Limited",
+                  collections: vm.timeLimited.toList(),
+                  percentage: false)
+              : Container(),
+          CollectionsPreview(
+              title: "In progress", collections: inProgress, percentage: true)
+        ];
+        return ListView.builder(
+          itemCount: previews.length,
+          itemBuilder: (BuildContext context, int index) {
+            return previews[index];
+          },
+        );
       },
+      converter: _HomeViewModel.fromStore,
+      distinct: true,
     );
   }
 }
@@ -208,7 +114,7 @@ class CollectionsPreview extends StatelessWidget {
 
   Widget image(String image) {
     return CircleAvatar(
-      backgroundImage: NetworkImage(image),
+      backgroundImage: MemoryImage(base64Decode(image)) ?? '',
       radius: 36,
     );
   }
@@ -231,11 +137,11 @@ class CollectionsPreview extends StatelessWidget {
                   ? new CircularPercentIndicator(
                       radius: 73.0,
                       lineWidth: 4.0,
-                      percent: 0.7,
+                      percent: collection.status,
                       progressColor: Colors.blue,
-                      center: image(collection.imageUrl),
+                      center: image(collection.image),
                     )
-                  : image(collection.imageUrl),
+                  : image(collection.image),
               Padding(
                 padding: EdgeInsets.only(top: 5),
                 child: Text(
@@ -254,6 +160,21 @@ class CollectionsPreview extends StatelessWidget {
       spacing: 20,
       runSpacing: 24.0,
       children: avatars,
+    );
+  }
+}
+
+class _HomeViewModel {
+  final Set<Collection> collections;
+  final Set<Collection> timeLimited;
+  //MobileUser user;
+
+  _HomeViewModel({this.collections, this.timeLimited});
+
+  static _HomeViewModel fromStore(Store<AppState> store) {
+    return _HomeViewModel(
+      collections: store.state.selectedCollections,
+      timeLimited: store.state.timeLimited,
     );
   }
 }

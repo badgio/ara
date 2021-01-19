@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ara/models/collection.dart';
 import 'package:ara/redux/redeem/redeem_actions.dart';
 import 'package:http/http.dart' as http;
 import 'package:ara/models/badge.dart';
@@ -34,7 +35,6 @@ Middleware<AppState> _createRedeemMiddleware(
         //token
         User mUser = FirebaseAuth.instance.currentUser;
         mUser.getIdToken(true).then((token) => {
-              print(token),
               getBadges(token, record.data, action, navigatorKeys, store,
                   collectionRep)
             });
@@ -92,15 +92,24 @@ Future getBadges(
       //This bagde has already been redeemed!
     }
     for (var i = 0; i < res.length; i++) {
-      String image = res[i]['image'].substring(
-        23,
-      );
+      var oldBadge = await collectionRep.getBadge(res[i]['uuid']);
       Badge badge = Badge(
           id: res[i]['uuid'],
           name: res[i]['name'],
-          image: image,
-          description: res[i]['description']);
-      collectionRep.addBadge(badge);
+          image: res[i]['image'].substring(22),
+          description: res[i]['description'],
+          redeemed: true,
+          collections: oldBadge.collections);
+      oldBadge.collections.forEach((id) async {
+        Collection collection = await collectionRep.getCollection(id);
+        print(collection.toString());
+        collection.updateBadges(badge);
+        collection.redeemedBadges.add(badge.id);
+        collection.status =
+            (collection.redeemedBadges.length) / (collection.badges.length);
+        collectionRep.updateCollection(collection);
+      });
+      collectionRep.updateBadge(badge);
       store.dispatch(OpenBadgeAction(badgeId: res[i]['uuid']));
       action.completer.complete();
     }

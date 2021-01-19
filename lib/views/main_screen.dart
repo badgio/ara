@@ -3,7 +3,6 @@ import 'package:ara/redux/navigation/navigation_actions.dart';
 import 'package:ara/routes.dart';
 import 'package:ara/views/common/app_bar.dart';
 import 'package:ara/views/bottom_bar.dart';
-import 'package:ara/views/redeem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';

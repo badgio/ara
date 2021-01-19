@@ -1,7 +1,23 @@
 import 'package:ara/models/collection.dart';
 import 'package:ara/models/badge.dart';
 
-class LoadCollectionsAction {}
+class ImportDataAction {
+  const ImportDataAction();
+
+  @override
+  String toString() {
+    return "ImportDataAction";
+  }
+}
+
+class LoadCollectionsAction {
+  const LoadCollectionsAction();
+
+  @override
+  String toString() {
+    return "LoadCollectionsAction";
+  }
+}
 
 class OpenCollectionAction {
   final String collectionId;
@@ -25,7 +41,26 @@ class CollectionLoadedAction {
   }
 }
 
-class LoadBadgesAction {}
+class CollectionsLoadedAction {
+  final Set<Collection> collections;
+  final Set<Collection> timeLimited;
+
+  const CollectionsLoadedAction({this.collections, this.timeLimited});
+
+  @override
+  String toString() {
+    return "CollectionLoadedAction{collection: $collections}";
+  }
+}
+
+class LoadBadgesAction {
+  const LoadBadgesAction();
+
+  @override
+  String toString() {
+    return "OpenBadgeAction";
+  }
+}
 
 class OpenBadgeAction {
   final String badgeId;

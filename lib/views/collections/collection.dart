@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:ara/models/badge.dart';
 import 'package:ara/models/collection.dart';
 import 'package:ara/redux/collections/collections_actions.dart';
 import 'package:ara/models/mobile_user.dart';
 import 'package:ara/redux/app_state.dart';
+import 'package:ara/views/common/image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -15,14 +17,16 @@ class CollectionView extends StatelessWidget {
       builder: (context, vm) {
         return ListView(
           children: [
-            _buildHeader(context, vm.col.name, vm.col.description),
+            _buildHeader(
+                context, vm.col.image, vm.col.name, vm.col.description),
             Divider(
               thickness: 1.8,
               color: Theme.of(context).dividerColor,
               indent: 60,
               endIndent: 60,
             ),
-            _buildBadgeList(vm.col.badges, context),
+            _buildBadgeList(
+                vm.col.redeemedBadges.length, vm.col.badges, context),
           ],
         );
       },
@@ -31,10 +35,14 @@ class CollectionView extends StatelessWidget {
     );
   }
 
-  Widget _buildBadgeList(Set<Badge> badges, BuildContext context) {
+  Widget _buildBadgeList(
+      int redeemed, Set<Badge> badges, BuildContext context) {
     return Column(
       children: [
-        _InfoBar(),
+        _InfoBar(
+          redeemed: redeemed,
+          total: badges.length,
+        ),
         Padding(
           padding: EdgeInsets.only(bottom: 20, top: 10, left: 10, right: 10),
           child: _buildBadgeGrid(badges, context),
@@ -59,8 +67,9 @@ class CollectionView extends StatelessWidget {
             padding: EdgeInsets.all(0.0),
             child: Column(
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(badge.image),
+                GreyImage(
+                  badge: badge,
+                  key: key,
                   radius: 40,
                 ),
                 Padding(
@@ -84,14 +93,19 @@ class CollectionView extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context, String name, String desc) {
+  Widget _buildHeader(
+      BuildContext context, String image, String name, String desc) {
     return Column(children: [
       Padding(
         padding: EdgeInsets.only(
           top: 20,
           bottom: 10,
         ),
-        child: CircleAvatar(radius: 35),
+        child: CircleAvatar(
+          radius: 35,
+          backgroundColor: Colors.grey,
+          backgroundImage: MemoryImage(base64Decode(image)) ?? '',
+        ),
       ),
       Text(
         name,
@@ -161,17 +175,24 @@ class _DescriptionState extends State<_Description> {
 }
 
 class _InfoBar extends StatefulWidget {
+  final int redeemed;
+  final int total;
+
+  _InfoBar({this.redeemed, this.total});
+
   @override
   _InfoBarState createState() => _InfoBarState();
 }
 
 class _InfoBarState extends State<_InfoBar> {
-  int _maxBadgeCount = 10;
-  int _currentBadgeCount = 2;
+  int _maxBadgeCount;
+  int _currentBadgeCount;
   String _filter = "Completed";
 
   @override
   void initState() {
+    this._maxBadgeCount = widget.total;
+    this._currentBadgeCount = widget.redeemed;
     super.initState();
   }
 

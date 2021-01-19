@@ -3,12 +3,16 @@ class Badge implements Comparable {
   String name;
   String image;
   String description;
+  bool redeemed;
+  Set<String> collections;
 
   Badge({
     this.id,
     this.name,
     this.image,
     this.description,
+    this.redeemed,
+    this.collections,
   });
 
   @override

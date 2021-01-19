@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:ara/models/badge.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';

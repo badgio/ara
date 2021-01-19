@@ -187,37 +187,37 @@ class _MapState extends State<_Map> {
     collectionList.add(
       Collection(
         name: "Collection A",
-        imageUrl: "https://bit.ly/3nPTzPm",
+        image: "https://bit.ly/3nPTzPm",
       ),
     );
     collectionList.add(
       Collection(
         name: "Collection A",
-        imageUrl: "https://bit.ly/3nPTzPm",
+        image: "https://bit.ly/3nPTzPm",
       ),
     );
     collectionList.add(
       Collection(
         name: "Collection A",
-        imageUrl: "https://bit.ly/3nPTzPm",
+        image: "https://bit.ly/3nPTzPm",
       ),
     );
     collectionList.add(
       Collection(
         name: "Collection A",
-        imageUrl: "https://bit.ly/3nPTzPm",
+        image: "https://bit.ly/3nPTzPm",
       ),
     );
     collectionList.add(
       Collection(
         name: "Collection A",
-        imageUrl: "https://bit.ly/3nPTzPm",
+        image: "https://bit.ly/3nPTzPm",
       ),
     );
     collectionList.add(
       Collection(
         name: "Collection A",
-        imageUrl: "https://bit.ly/3nPTzPm",
+        image: "https://bit.ly/3nPTzPm",
       ),
     );
 

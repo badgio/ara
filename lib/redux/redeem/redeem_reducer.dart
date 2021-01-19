@@ -12,5 +12,7 @@ AppState _redeemBadge(AppState state, RedeemTagAction action) {
     user: state.user,
     selectedCollection: state.selectedCollection,
     selectedBadge: state.selectedBadge,
+    selectedCollections: state.selectedCollections,
+    timeLimited: state.timeLimited,
   );
 }

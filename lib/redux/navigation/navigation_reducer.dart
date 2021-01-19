@@ -13,5 +13,7 @@ AppState _updateBottomBarIndex(
     navSelectedIndex: action.newIndex,
     selectedCollection: state.selectedCollection,
     selectedBadge: state.selectedBadge,
+    selectedCollections: state.selectedCollections,
+    timeLimited: state.timeLimited,
   );
 }

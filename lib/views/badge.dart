@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:ara/models/badge.dart';
 import 'package:ara/models/mobile_user.dart';
 import 'package:ara/redux/app_state.dart';
@@ -36,7 +36,7 @@ class BadgeView extends StatelessWidget {
                   bottom: 10,
                 ),
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(vm.b.imageUrl) ?? '',
+                  backgroundImage: MemoryImage(base64Decode(vm.b.image)) ?? '',
                   radius: 100,
                 ),
               ),
@@ -52,15 +52,17 @@ class BadgeView extends StatelessWidget {
                   bottom: 10,
                 ),
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     ElevatedButton(
                       onPressed: () async {
-                        SocialShare.shareTwitter(
-                            "Visitei",
-                            hashtags: [vm.b.name.replaceAll(' ', ''), "Badgio"],
-                            url: "https://badgio.pt",
-                            trailingText: "\nJunte-se ao Badgio!")
+                        SocialShare.shareTwitter("Visitei",
+                                hashtags: [
+                                  vm.b.name.replaceAll(' ', ''),
+                                  "Badgio"
+                                ],
+                                url: "https://badgio.pt",
+                                trailingText: "\nJunte-se ao Badgio!")
                             .then((data) {
                           print(data);
                         });
@@ -72,9 +74,11 @@ class BadgeView extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        await screenshotController.capture().then((image) async {
-                          SocialShare.shareInstagramStory(image.path,
-                              "#444444", "#987654", "https://deep-link-url")
+                        await screenshotController
+                            .capture()
+                            .then((image) async {
+                          SocialShare.shareInstagramStory(image.path, "#444444",
+                                  "#987654", "https://deep-link-url")
                               .then((data) {
                             print(data);
                           });
@@ -87,20 +91,28 @@ class BadgeView extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        await screenshotController.capture().then((image) async {
+                        await screenshotController
+                            .capture()
+                            .then((image) async {
                           //facebook appId is mandatory for android or else share won't work
                           Platform.isAndroid
-                              ? SocialShare.shareFacebookStory(image.path,
-                              "#ffffff", "#000000", "https://google.com",
-                              appId: "171357121398480")
-                              .then((data) {
-                            print(data);
-                          })
-                              : SocialShare.shareFacebookStory(image.path,
-                              "#ffffff", "#000000", "https://google.com")
-                              .then((data) {
-                            print(data);
-                          });
+                              ? SocialShare.shareFacebookStory(
+                                      image.path,
+                                      "#ffffff",
+                                      "#000000",
+                                      "https://google.com",
+                                      appId: "171357121398480")
+                                  .then((data) {
+                                  print(data);
+                                })
+                              : SocialShare.shareFacebookStory(
+                                      image.path,
+                                      "#ffffff",
+                                      "#000000",
+                                      "https://google.com")
+                                  .then((data) {
+                                  print(data);
+                                });
                         });
                       },
                       child: Text("F"),
@@ -112,7 +124,8 @@ class BadgeView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 10),
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 10),
                 child: Text(vm.b.description ?? ''),
               ),
             ]),

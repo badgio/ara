@@ -97,7 +97,7 @@ class LocationMarkerPopup extends StatelessWidget {
       collections.add(
         GestureDetector(
           child: CircleAvatar(
-            backgroundImage: NetworkImage(c.imageUrl),
+            backgroundImage: NetworkImage(c.image),
           ),
           onTap: () => StoreProvider.of<AppState>(context)
               .dispatch(OpenCollectionAction(collectionId: "c1")),

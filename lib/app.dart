@@ -56,6 +56,12 @@ class _BadgioAppState extends State<BadgioApp> {
           ),
         )
         ..addAll(
+          createImportDataMiddleware(
+            collectionRepository,
+            _navigatorKeys,
+          ),
+        )
+        ..addAll(
           createBadgesMiddleware(
             collectionRepository,
             _navigatorKeys,
