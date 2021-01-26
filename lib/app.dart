@@ -72,7 +72,20 @@ class _BadgioAppState extends State<BadgioApp> {
             collectionRepository,
             _navigatorKeys,
           ),
+        )
+        ..addAll(
+          createProfileImportDataMiddleware(
+            userRepository,
+            _navigatorKeys,
+          ),
+        )
+        ..addAll(
+          createProfileMiddleware(
+            userRepository,
+            _navigatorKeys,
         ),
+    ),
+
     );
     store.dispatch(VerifyAuthenticationStateAction());
   }

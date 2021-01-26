@@ -27,7 +27,7 @@ class CollectionRepository {
   }
 
   Future<Set<Badge>> getAllBadges() async {
-    return await Future(() => _badges);
+    return Future(() => _badges);
   }
 
   Future<Set<Collection>> getTimeLimited() async {

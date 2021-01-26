@@ -36,7 +36,7 @@ class Routes {
         final page = BadgeView();
         return MaterialPageRoute(builder: (context) => page);
       case you:
-        final page = CollectionsPageProfile();
+        final page = Profile();
         return MaterialPageRoute(builder: (context) => page);
       case redeem:
         final page = RedeemPage();

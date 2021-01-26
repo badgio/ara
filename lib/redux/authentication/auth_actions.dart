@@ -1,3 +1,4 @@
+import 'package:ara/models/info_user.dart';
 import 'package:ara/models/mobile_user.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
@@ -85,3 +86,24 @@ class StartSignUpAction {
 class SignOutAction {}
 
 class SignOutSuccessAction {}
+
+class LoadProfileAction {
+  const LoadProfileAction();
+
+  @override
+  String toString() {
+    return "OpenProfileAction";
+  }
+}
+
+class ProfileLoadedAction {
+  final InfoUser user;
+
+  const ProfileLoadedAction({this.user});
+
+
+  @override
+  String toString() {
+    return "ProfileLoadedAction{user: $user}";
+  }
+}

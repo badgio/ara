@@ -13,7 +13,9 @@ AppState _openCollection(AppState state, CollectionLoadedAction action) {
     selectedCollection: action.collection,
     selectedCollections: state.selectedCollections,
     selectedBadge: state.selectedBadge,
+    selectedBadges: state.selectedBadges,
     timeLimited: state.timeLimited,
+    selectedUser: state.selectedUser,
   );
 }
 
@@ -28,7 +30,9 @@ AppState _loadedCollections(AppState state, CollectionsLoadedAction action) {
     selectedCollection: state.selectedCollection,
     selectedCollections: action.collections,
     selectedBadge: state.selectedBadge,
+    selectedBadges: state.selectedBadges,
     timeLimited: action.timeLimited,
+    selectedUser: state.selectedUser,
   );
 }
 
@@ -43,6 +47,24 @@ AppState _openBadge(AppState state, BadgeLoadedAction action) {
     selectedBadge: action.badge,
     selectedCollection: state.selectedCollection,
     selectedCollections: state.selectedCollections,
+    selectedBadges: state.selectedBadges,
     timeLimited: state.timeLimited,
+    selectedUser: state.selectedUser,
+  );
+}
+
+final badgesReducers = combineReducers<AppState>([
+  TypedReducer<AppState, BadgesLoadedAction>(_loadedBadges),
+]);
+
+AppState _loadedBadges(AppState state, BadgesLoadedAction action) {
+  return AppState(
+    navSelectedIndex: state.navSelectedIndex,
+    user: state.user,
+    selectedCollection: state.selectedCollection,
+    selectedBadges: action.badges,
+    selectedBadge: state.selectedBadge,
+    timeLimited: state.timeLimited,
+    selectedUser: state.selectedUser,
   );
 }

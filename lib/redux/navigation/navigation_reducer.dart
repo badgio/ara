@@ -14,6 +14,8 @@ AppState _updateBottomBarIndex(
     selectedCollection: state.selectedCollection,
     selectedBadge: state.selectedBadge,
     selectedCollections: state.selectedCollections,
+    selectedBadges: state.selectedBadges,
     timeLimited: state.timeLimited,
+    selectedUser: state.selectedUser,
   );
 }

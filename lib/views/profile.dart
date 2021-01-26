@@ -1,175 +1,92 @@
 import 'package:ara/models/badge.dart';
+import 'package:ara/models/collection.dart';
+import 'package:ara/models/info_user.dart';
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/redux/collections/collections_actions.dart';
+import 'package:ara/views/common/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
-class CollectionsPageProfile extends StatelessWidget {
+class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Badge> badges = List();
-    badges.add(Badge(
-      id: "b1",
-      name: "Tasca do Miguel",
-      image: "https://bit.ly/33TaWHw",
-    ));
-    badges.add(Badge(
-      id: "b2",
-      name: "Rodízio do Diogo",
-      image: "https://bit.ly/37KiWf5",
-    ));
-    badges.add(Badge(
-      id: "b3",
-      name: "Cupcakes da Rafaela",
-      image: "https://bit.ly/2JKBeoy",
-    ));
-    badges.add(Badge(
-      id: "b4",
-      name: "Panados do Luís",
-      image: "https://bit.ly/2VSdIIQ",
-    ));
-    List<Badge> badges2 = List();
-    badges2.add(Badge(
-      id: "b4",
-      name: "Panados do Luís",
-      image: "https://bit.ly/2VSdIIQ",
-    ));
-    badges2.add(Badge(
-      id: "b5",
-      name: "Ponchas do Francisco",
-      image: "https://bit.ly/39QgmGW",
-    ));
-    badges2.add(Badge(
-      id: "b6",
-      name: "Coxinhas do André",
-      image: "https://bit.ly/2W4SbNb",
-    ));
-    badges2.add(Badge(
-      id: "b7",
-      name: "Franguinho à José",
-      image: "https://bit.ly/3lUdATx",
-    ));
-    List<Widget> previews = [
-      CollectionPreviewProfile(
-        id: "c1",
-        title: "Badgio Cool 2021",
-        badges: badges,
-      ),
-      CollectionPreviewProfile(
-        id: "c2",
-        title: "Collection B",
-        badges: badges2,
-      ),
-      CollectionPreviewProfile(
-        id: "c3",
-        title: "Collection C",
-        badges: badges,
-      ),
-      CollectionPreviewProfile(
-        id: "c4",
-        title: "Collection D",
-        badges: badges,
-      ),
-      CollectionPreviewProfile(
-        id: "c5",
-        title: "Collection E",
-        badges: badges,
-      ),
-    ];
-    List<Widget> friendPreviews = [
-      FriendPreviewProfile(
-        id: "f1",
-        name: "Miguel Carvalho",
-        city: "Braga",
-        country: "Portugal",
-        nrBadges: 40,
-        nrCollections: 4,
-        nrRewards: 4,
-      ),
-      FriendPreviewProfile(
-        id: "f2",
-        name: "Luís Alves",
-        city: "Braga",
-        country: "Portugal",
-        nrBadges: 80,
-        nrCollections: 7,
-        nrRewards: 9,
-      ),
-      FriendPreviewProfile(
-        id: "f3",
-        name: "Rafaela Rodrigues",
-        city: "Braga",
-        country: "Portugal",
-        nrBadges: 60,
-        nrCollections: 3,
-        nrRewards: 6,
-      ),
-      FriendPreviewProfile(
-        id: "f4",
-        name: "Francisco Reinolds",
-        city: "Funchal",
-        country: "Portugal",
-        nrBadges: 30,
-        nrCollections: 1,
-        nrRewards: 3,
-      ),
-    ];
-    return Padding(
-        padding: EdgeInsets.only(),
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            body: CustomScrollView(
-              slivers: <Widget>[
-                SliverToBoxAdapter(
-                  child: SafeArea(
-                    child: Row(
-                      children: [
-                        _buildMyInfo(context),
-                        _buildMetrics(context),
-                      ],
+    return StoreConnector<AppState, _ProfileViewModel>(
+      builder: (context, vm) {
+        List<Widget> previews = [];
+        vm.collections.forEach((col) {
+          previews.add(CollectionPreviewProfile(
+              id: col.id, title: col.name, badges: col.badges.toList()));
+        });
+        return Padding(
+            padding: EdgeInsets.only(),
+            child: DefaultTabController(
+              length: 2,
+              child: Scaffold(
+                body: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverToBoxAdapter(
+                      child: SafeArea(
+                        child: Row(
+                          children: [
+                            _buildMyInfo(context, vm.user.name, vm.user.city, vm.user.country),
+                            //_buildMyInfo(context, vm.user.name, vm.user.city, vm.user.country),
+                            _buildMetrics(context, vm.badges, vm.collections),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: TabBar(
-                    tabs: [
-                      Tab(
-                          child: Text('Collections',
-                              style: TextStyle(color: Colors.black))),
-                      Tab(
-                          child: Text('Friends',
-                              style: TextStyle(color: Colors.black))),
-                    ],
-                  ),
-                ),
-                SliverFillRemaining(
-                  child: TabBarView(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: previews.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return previews[index];
-                        },
+                    SliverToBoxAdapter(
+                      child: TabBar(
+                        tabs: [
+                          Tab(
+                              child: Text('Collections',
+                                  style: TextStyle(color: Colors.black))),
+                          Tab(
+                              child: Text('Friends',
+                                  style: TextStyle(color: Colors.black))),
+                        ],
                       ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: friendPreviews.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return friendPreviews[index];
-                        },
+                    ),
+                    SliverFillRemaining(
+                      child: TabBarView(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: previews.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return previews[index];
+                            },
+                          ),
+                          Center(
+                            child: Text(
+                              "Soon",
+                              style: Theme.of(context).textTheme.headline5,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ));
+              ),
+            )
+        );
+        return ListView.builder(
+          itemCount: previews.length,
+          itemBuilder: (BuildContext context, int index) {
+            return previews[index];
+          },
+        );
+      },
+      converter: _ProfileViewModel.fromStore,
+      distinct: true,
+    );
   }
 
-  Widget _buildMyInfo(BuildContext context) {
+  Widget _buildMyInfo(BuildContext context, String name, String city, String country) {
     return Expanded(
       flex: 6,
       child: Column(
@@ -190,13 +107,13 @@ class CollectionsPageProfile extends StatelessWidget {
             ),
           ),
           Text(
-            "My Awesome Name that never fuckin ends",
+            name,
             style: Theme.of(context).textTheme.headline5,
             softWrap: true,
             textAlign: TextAlign.center,
           ),
           Text(
-            "City, Country",
+            city + ', ' + country,
             style: Theme.of(context).textTheme.bodyText2,
             softWrap: true,
             textAlign: TextAlign.center,
@@ -206,7 +123,32 @@ class CollectionsPageProfile extends StatelessWidget {
     );
   }
 
-  Widget _buildMetrics(BuildContext context) {
+  Widget _buildMetrics(BuildContext context, Set<Badge> badges, Set<Collection> collections) {
+    int redeemedBadges = 0;
+    int completedCollections = 0;
+
+    final b = badges.iterator;
+
+    while(b.moveNext()) {
+      if(b.current.redeemed) redeemedBadges = redeemedBadges + 1;
+    }
+
+    final col = collections.iterator;
+
+    while(col.moveNext()) {
+      var it = col.current.badges.iterator;
+      var completed = true;
+
+      while(it.moveNext()) {
+        if(!it.current.redeemed) {
+          completed = false;
+          break;
+        }
+      }
+
+      if(completed) completedCollections = completedCollections + 1;
+    }
+
     return Expanded(
       flex: 4,
       child: Column(
@@ -221,35 +163,21 @@ class CollectionsPageProfile extends StatelessWidget {
             ),
           ),
           Text(
-            "X",
+            completedCollections.toString(),
             style: Theme.of(context).textTheme.bodyText2,
             softWrap: true,
           ),
           Padding(
             padding: EdgeInsets.only(top: 20),
             child: Text(
-              "Total Rewards",
+              "Badges Redeemed",
               style: Theme.of(context).textTheme.headline5,
               softWrap: true,
               textAlign: TextAlign.center,
             ),
           ),
           Text(
-            "X",
-            style: Theme.of(context).textTheme.bodyText2,
-            softWrap: true,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Text(
-              "Badges",
-              style: Theme.of(context).textTheme.headline5,
-              softWrap: true,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Text(
-            "X",
+            redeemedBadges.toString(),
             style: Theme.of(context).textTheme.bodyText2,
             softWrap: true,
           ),
@@ -338,9 +266,10 @@ class CollectionPreviewProfile extends StatelessWidget {
         padding: EdgeInsets.all(0.0),
         child: Column(
           children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(b.image),
+            GreyImage(
+              badge: b,
               radius: 36,
+              key: key,
             ),
             Padding(
               padding: EdgeInsets.only(top: 5),
@@ -358,79 +287,18 @@ class CollectionPreviewProfile extends StatelessWidget {
   }
 }
 
-class FriendPreviewProfile extends StatelessWidget {
-  final String id;
-  final String name;
-  final String city;
-  final String country;
-  final int nrBadges;
-  final int nrCollections;
-  final int nrRewards;
+class _ProfileViewModel {
+  final Set<Collection> collections;
+  final Set<Badge> badges;
+  InfoUser user;
 
-  FriendPreviewProfile(
-      {this.id,
-      this.name,
-      this.city,
-      this.country,
-      this.nrBadges,
-      this.nrCollections,
-      this.nrRewards});
+  _ProfileViewModel({this.collections, this.badges, this.user});
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 10,
-      ),
-      child: Column(
-        children: [
-          Row(children: [
-            CircleAvatar(
-              radius: 20,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: 10,
-              ),
-            ),
-            _buildName(context),
-            Text(
-              nrCollections.toString(),
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: 60,
-              ),
-            ),
-            Text(
-              nrBadges.toString(),
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: 10,
-              ),
-            ),
-          ]),
-          Padding(
-            padding: EdgeInsets.only(
-              bottom: 15,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildName(BuildContext context) {
-    return Expanded(
-      child: Text(
-        name,
-        style: Theme.of(context).textTheme.headline6,
-      ),
+  static _ProfileViewModel fromStore(Store<AppState> store) {
+    return _ProfileViewModel(
+      collections: store.state.selectedCollections,
+      badges: store.state.selectedBadges,
+      user: store.state.selectedUser,
     );
   }
 }

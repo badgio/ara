@@ -58,7 +58,7 @@ class LoadBadgesAction {
 
   @override
   String toString() {
-    return "OpenBadgeAction";
+    return "LoadBadgesAction";
   }
 }
 
@@ -81,5 +81,16 @@ class BadgeLoadedAction {
   @override
   String toString() {
     return "BadgeLoadedAction{badge: $badge}";
+  }
+}
+
+class BadgesLoadedAction {
+  final Set<Badge> badges;
+
+  const BadgesLoadedAction({this.badges});
+
+  @override
+  String toString() {
+    return "BadgesLoadedAction{badges: $badges}";
   }
 }

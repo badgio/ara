@@ -1,10 +1,12 @@
+import 'package:ara/models/info_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ara/models/mobile_user.dart';
 
 class UserRepository {
   final FirebaseAuth _firebaseAuth;
+  InfoUser _user;
 
-  const UserRepository(this._firebaseAuth);
+  UserRepository(this._firebaseAuth);
 
   Future<MobileUser> signIn(String email, String password) async {
     final firebaseUser = await _firebaseAuth.signInWithEmailAndPassword(
@@ -25,5 +27,13 @@ class UserRepository {
     MobileUser user =
         MobileUser(email: firebaseUser.email, id: firebaseUser.uid);
     return user;
+  }
+
+  Future<InfoUser> getProfile() async {
+    return await Future(() => _user);
+  }
+
+  void addInfoUser(InfoUser user) {
+    _user = user;
   }
 }

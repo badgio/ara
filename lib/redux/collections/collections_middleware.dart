@@ -115,7 +115,12 @@ Middleware<AppState> _importData(
     repo.addCollections(_collections.values.toSet());
     repo.addBadges(_badges);
     repo.addTimeLimited(timeLimited);
-    await store.dispatch(LoadCollectionsAction());
+
+    final cols = LoadCollectionsAction();
+    final bs = LoadBadgesAction();
+
+    store.dispatch(cols);
+    store.dispatch(bs);
   };
 }
 
@@ -179,8 +184,9 @@ Middleware<AppState> _loadBadges(
 ) {
   return (Store store, action, NextDispatcher next) async {
     next(action);
-
-    return null;
+    var bs = await repo.getAllBadges();
+    await store.dispatch(
+        BadgesLoadedAction(badges: bs));
   };
 }
 

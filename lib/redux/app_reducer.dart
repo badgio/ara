@@ -12,4 +12,6 @@ final appReducer = combineReducers<AppState>([
   bReducers,
   redReducers,
   collectionsReducers,
+  profReducers,
+  badgesReducers,
 ]);

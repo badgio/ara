@@ -1,10 +1,17 @@
+import 'dart:convert';
+
+import 'package:ara/models/badge.dart';
 import 'package:ara/models/collection.dart';
 import 'package:ara/models/location.dart';
+import 'package:ara/redux/app_state.dart';
+import 'package:ara/redux/collections/collections_actions.dart';
 import 'package:ara/views/search/location_marker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:latlong/latlong.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
+import 'package:redux/redux.dart';
 
 class SearchPage extends StatelessWidget {
   @override
@@ -21,81 +28,69 @@ class SearchPage extends StatelessWidget {
 class _SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 20,
-        left: 20,
-        right: 20,
-      ),
-      child: GestureDetector(
-        onTap: () {
-          showSearch(context: context, delegate: DataSearch());
-        },
-        child: Container(
-          height: 44,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            ),
-            border: Border.all(
-              color: Colors.black,
-              width: 0.3,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 10,
-                offset: Offset(0, 5),
-              )
-            ],
+    return StoreConnector<AppState, _SearchViewModel>(
+      builder: (context, vm) {
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 20,
+            left: 20,
+            right: 20,
           ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text("Filter here..."),
+          child: GestureDetector(
+            onTap: () {
+              showSearch(context: context, delegate: DataSearch(badges: vm.badges));
+            },
+            child: Container(
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
                 ),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 0.3,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                  )
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 20),
-                child: Icon(
-                  Icons.search,
-                ),
-              )
-            ],
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text("Filter here..."),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Icon(
+                      Icons.search,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
+      converter: _SearchViewModel.fromStore,
+      distinct: true,
     );
   }
 }
 
 class DataSearch extends SearchDelegate<String>{
 
-  //hardcoded places
-  final places = [
-    "Museu dos Biscainhos",
-    "Sé de Braga",
-    "Igreja dos Terceiros",
-    "Igreja dos Congregados",
-    "Museu D. Diogo de Sousa",
-    "Igreja do Carmo",
-    "Restaurante do Padrinho do Zé",
-    "Avenida Central",
-    "Universidade do Minho",
-    "Restaurante 'Cozinha da Sé'"
-  ];
+  Set<Badge> badges;
 
-  //hardcoded recent places
-  final recentPlaces = [
-    "Igreja do Carmo",
-    "Restaurante do Padrinho do Zé",
-    "Avenida Central",
-    "Sé de Braga"
-  ];
+  DataSearch({this.badges});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -125,17 +120,32 @@ class DataSearch extends SearchDelegate<String>{
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final badgeNameArr = [];
+    final badgeImageArr = [];
+    final badgeIDArr = [];
+    final it = badges.iterator;
+
+    while(it.moveNext()) {
+      badgeNameArr.add(it.current.name.toString());
+      badgeImageArr.add(it.current.image);
+      badgeIDArr.add(it.current.id);
+    }
+
     //show when someone searches for something
     final suggestionList = query.isEmpty
-        ? recentPlaces
-        : places.where((p) => p.startsWith(query)).toList();
+        ? badgeNameArr
+        : badgeNameArr.where((p) => p.startsWith(query)).toList();
 
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {
-          showResults(context);
+          StoreProvider.of<AppState>(context)
+              .dispatch(OpenBadgeAction(badgeId: badgeIDArr[index]));
         },
-        leading: Icon(Icons.location_city),
+        leading: CircleAvatar(
+            backgroundImage: MemoryImage(base64Decode(badgeImageArr[index])),
+            radius: 20,
+        ),
         title: RichText(
           text: TextSpan(
             text: suggestionList[index].substring(0,query.length),
@@ -158,6 +168,19 @@ class DataSearch extends SearchDelegate<String>{
     );
   }
 }
+
+class _SearchViewModel {
+  final Set<Badge> badges;
+
+  static _SearchViewModel fromStore(Store<AppState> store) {
+    return _SearchViewModel(
+      badges: store.state.selectedBadges,
+    );
+  }
+
+  _SearchViewModel({this.badges});
+}
+
 class _Map extends StatefulWidget {
   _Map({Key key}) : super(key: key);
 
