@@ -29,7 +29,8 @@ class Profile extends StatelessWidget {
                       child: SafeArea(
                         child: Row(
                           children: [
-                            _buildMyInfo(context, vm.user.name, vm.user.city, vm.user.country),
+                            _buildMyInfo(context, vm.user.name, vm.user.city,
+                                vm.user.country),
                             //_buildMyInfo(context, vm.user.name, vm.user.city, vm.user.country),
                             _buildMetrics(context, vm.badges, vm.collections),
                           ],
@@ -60,7 +61,7 @@ class Profile extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              "Soon",
+                              "Coming Soon",
                               style: Theme.of(context).textTheme.headline5,
                               softWrap: true,
                               textAlign: TextAlign.center,
@@ -72,8 +73,7 @@ class Profile extends StatelessWidget {
                   ],
                 ),
               ),
-            )
-        );
+            ));
         return ListView.builder(
           itemCount: previews.length,
           itemBuilder: (BuildContext context, int index) {
@@ -86,7 +86,8 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget _buildMyInfo(BuildContext context, String name, String city, String country) {
+  Widget _buildMyInfo(
+      BuildContext context, String name, String city, String country) {
     return Expanded(
       flex: 6,
       child: Column(
@@ -107,13 +108,13 @@ class Profile extends StatelessWidget {
             ),
           ),
           Text(
-            name,
+            name ?? '',
             style: Theme.of(context).textTheme.headline5,
             softWrap: true,
             textAlign: TextAlign.center,
           ),
           Text(
-            city + ', ' + country,
+            city == null ? '' : "$city, " + country ?? '',
             style: Theme.of(context).textTheme.bodyText2,
             softWrap: true,
             textAlign: TextAlign.center,
@@ -123,30 +124,31 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget _buildMetrics(BuildContext context, Set<Badge> badges, Set<Collection> collections) {
+  Widget _buildMetrics(
+      BuildContext context, Set<Badge> badges, Set<Collection> collections) {
     int redeemedBadges = 0;
     int completedCollections = 0;
 
     final b = badges.iterator;
 
-    while(b.moveNext()) {
-      if(b.current.redeemed) redeemedBadges = redeemedBadges + 1;
+    while (b.moveNext()) {
+      if (b.current.redeemed) redeemedBadges = redeemedBadges + 1;
     }
 
     final col = collections.iterator;
 
-    while(col.moveNext()) {
+    while (col.moveNext()) {
       var it = col.current.badges.iterator;
       var completed = true;
 
-      while(it.moveNext()) {
-        if(!it.current.redeemed) {
+      while (it.moveNext()) {
+        if (!it.current.redeemed) {
           completed = false;
           break;
         }
       }
 
-      if(completed) completedCollections = completedCollections + 1;
+      if (completed) completedCollections = completedCollections + 1;
     }
 
     return Expanded(
@@ -249,8 +251,8 @@ class CollectionPreviewProfile extends StatelessWidget {
 
   List<Widget> _buildBadgePreview(BuildContext context) {
     List<Widget> previewList = List();
-    for (Badge b in badges) {
-      previewList.add(_buildBadge(context, b));
+    for (int i = 0; i < 3 && i < badges.length; i++) {
+      previewList.add(_buildBadge(context, badges[i]));
     }
     return previewList;
   }
