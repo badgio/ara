@@ -38,6 +38,12 @@ Future<dynamic> getData(String path, String token) async {
   }
 }
 
+String getImage(String image) {
+  RegExp exp = new RegExp(r"(.+?,)(.*)");
+  Iterable<RegExpMatch> matches = exp.allMatches(image);
+  return matches.first.group(2);
+}
+
 Middleware<AppState> _importData(
   CollectionRepository repo,
   Map<String, GlobalKey<NavigatorState>> navKey,
@@ -49,7 +55,7 @@ Middleware<AppState> _importData(
     Map<String, Collection> _collections = {};
     Set<Badge> _badges = {};
     //get all Collections
-    var col = await getData("/collections", token);
+    var col = await getData("/collections?status=APPROVED", token);
     for (var i = 0; i < col.length; i++) {
       var status =
           await getData("/collections/" + col[i]['uuid'] + "/status", token);
@@ -58,7 +64,7 @@ Middleware<AppState> _importData(
           () => Collection(
                 id: col[i]['uuid'],
                 name: col[i]['name'],
-                image: col[i]['image'].substring(22),
+                image: getImage(col[i]['image']),
                 description: col[i]['description'],
                 badges: {},
                 startDate: DateTime.parse(col[i]['start_date']),
@@ -71,7 +77,7 @@ Middleware<AppState> _importData(
               ));
     }
     //get All badges
-    var badges = await getData("/badges", token);
+    var badges = await getData("/badges?status=APPROVED", token);
     for (var i = 0; i < badges.length; i++) {
       var badgeCol =
           await getData("/collections?badge=" + badges[i]['uuid'], token);
@@ -79,20 +85,28 @@ Middleware<AppState> _importData(
       for (int i = 0; i < badgeCol.length; i++) {
         collec.add(badgeCol[i]['uuid']);
       }
-      var redeemed = _collections[badgeCol[0]['uuid']]
-          .redeemedBadges
-          .contains(badges[0]['uuid']);
+      var red = false;
+      if (badgeCol.length == 0) {
+        continue;
+      }
+      if (_collections[badgeCol[0]['uuid']].redeemedBadges.isNotEmpty) {
+        red = _collections[badgeCol[0]['uuid']]
+            .redeemedBadges
+            .contains(badges[i]['uuid']);
+      }
       var badge = Badge(
         id: badges[i]['uuid'],
         description: badges[i]['description'],
         name: badges[i]['name'],
-        image: badges[i]['image'].substring(22),
-        redeemed: redeemed,
+        image: getImage(badges[i]['image']),
+        redeemed: red,
         collections: collec,
       );
       for (var u = 0; u < badgeCol.length; u++) {
         var collection = _collections[badgeCol[u]['uuid']];
-        collection.badges.add(badge);
+        if (_collections.containsKey(badgeCol[u]['uuid'])) {
+          collection.badges.add(badge);
+        }
         _badges.add(badge);
       }
     }
@@ -185,8 +199,7 @@ Middleware<AppState> _loadBadges(
   return (Store store, action, NextDispatcher next) async {
     next(action);
     var bs = await repo.getAllBadges();
-    await store.dispatch(
-        BadgesLoadedAction(badges: bs));
+    await store.dispatch(BadgesLoadedAction(badges: bs));
   };
 }
 

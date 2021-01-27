@@ -92,8 +92,8 @@ class CollectionPreview extends StatelessWidget {
 
   List<Widget> _buildBadgePreview(BuildContext context) {
     List<Widget> previewList = List();
-    for (Badge b in badges) {
-      previewList.add(_buildBadge(context, b));
+    for (int i = 0; i < 3 && i < badges.length; i++) {
+      previewList.add(_buildBadge(context, badges[i]));
     }
     return previewList;
   }
