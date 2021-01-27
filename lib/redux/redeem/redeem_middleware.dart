@@ -100,8 +100,8 @@ Future getBadges(
           description: res[i]['description'],
           redeemed: true,
           collections: oldBadge.collections);
-      oldBadge.collections.forEach((id) async {
-        Collection collection = await collectionRep.getCollection(id);
+      oldBadge.collections.forEach((col) async {
+        Collection collection = await collectionRep.getCollection(col.id);
         print(collection.toString());
         collection.updateBadges(badge);
         collection.redeemedBadges.add(badge.id);

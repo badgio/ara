@@ -1,10 +1,16 @@
+import 'dart:ffi';
+
+import 'package:ara/models/collection.dart';
+
 class Badge implements Comparable {
   String id;
   String name;
   String image;
   String description;
   bool redeemed;
-  Set<String> collections;
+  Set<Collection> collections;
+  double lat;
+  double lng;
 
   Badge({
     this.id,
@@ -13,6 +19,8 @@ class Badge implements Comparable {
     this.description,
     this.redeemed,
     this.collections,
+    this.lat,
+    this.lng,
   });
 
   @override

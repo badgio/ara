@@ -81,9 +81,12 @@ Middleware<AppState> _importData(
     for (var i = 0; i < badges.length; i++) {
       var badgeCol =
           await getData("/collections?badge=" + badges[i]['uuid'], token);
-      Set<String> collec = {};
+      Set<Collection> collec = {};
       for (int i = 0; i < badgeCol.length; i++) {
-        collec.add(badgeCol[i]['uuid']);
+        collec.add(Collection(
+          id: badgeCol[i]['uuid'],
+          image: getImage(badgeCol[i]['image']),
+        ));
       }
       var red = false;
       if (badgeCol.length == 0) {
@@ -94,6 +97,7 @@ Middleware<AppState> _importData(
             .redeemedBadges
             .contains(badges[i]['uuid']);
       }
+      var location = await getData("/locations?uuid=" + badges[i]['location'], token);
       var badge = Badge(
         id: badges[i]['uuid'],
         description: badges[i]['description'],
@@ -101,6 +105,8 @@ Middleware<AppState> _importData(
         image: getImage(badges[i]['image']),
         redeemed: red,
         collections: collec,
+        lat: location[0]['latitude'],
+        lng: location[0]['longitude'],
       );
       for (var u = 0; u < badgeCol.length; u++) {
         var collection = _collections[badgeCol[u]['uuid']];

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ara/models/location.dart';
 import 'package:ara/redux/app_state.dart';
 import 'package:ara/redux/collections/collections_actions.dart';
@@ -97,10 +99,10 @@ class LocationMarkerPopup extends StatelessWidget {
       collections.add(
         GestureDetector(
           child: CircleAvatar(
-            backgroundImage: NetworkImage(c.image),
+            backgroundImage: MemoryImage(base64Decode(c.image)),
           ),
           onTap: () => StoreProvider.of<AppState>(context)
-              .dispatch(OpenCollectionAction(collectionId: "c1")),
+              .dispatch(OpenCollectionAction(collectionId: c.id)),
         ),
       );
     });

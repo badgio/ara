@@ -206,91 +206,61 @@ class _MapState extends State<_Map> {
       _building = false;
     });
 
-    List<Collection> collectionList = List();
-    collectionList.add(
-      Collection(
-        name: "Collection A",
-        image: "https://bit.ly/3nPTzPm",
-      ),
-    );
-    collectionList.add(
-      Collection(
-        name: "Collection A",
-        image: "https://bit.ly/3nPTzPm",
-      ),
-    );
-    collectionList.add(
-      Collection(
-        name: "Collection A",
-        image: "https://bit.ly/3nPTzPm",
-      ),
-    );
-    collectionList.add(
-      Collection(
-        name: "Collection A",
-        image: "https://bit.ly/3nPTzPm",
-      ),
-    );
-    collectionList.add(
-      Collection(
-        name: "Collection A",
-        image: "https://bit.ly/3nPTzPm",
-      ),
-    );
-    collectionList.add(
-      Collection(
-        name: "Collection A",
-        image: "https://bit.ly/3nPTzPm",
-      ),
-    );
-
-    return FlutterMap(
-      options: MapOptions(
-        center: LatLng(41.542503, -8.417631),
-        zoom: currentZoom,
-        maxZoom: 18,
-        onPositionChanged: (pos, ges) {
-          if (!_building) updateZoom(pos, ges);
-        },
-        plugins: [
-          PopupMarkerPlugin(),
-        ],
-        interactive: true,
-        onTap: (_) => _popupLayerController.hidePopup(),
-      ),
-      layers: [
-        TileLayerOptions(
-          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
-        ),
-        PopupMarkerLayerOptions(
-          markers: [
-            LocationMarker(
-              size: _getMarkerSizeFromZoom(currentZoom),
-              location: Location(
-                lat: 41.542547,
-                lon: -8.417800,
-                name: "Local A",
-                collections: collectionList,
-              ),
-              completed: true,
-            )
+    return StoreConnector<AppState, _SearchViewModel>(
+      builder: (context, vm) {
+        List<Marker> markers = [];
+        vm.badges.forEach((b) {
+          markers.add(LocationMarker(
+            size: _getMarkerSizeFromZoom(currentZoom),
+            location: Location(
+              lat: b.lat,
+              lon: b.lng,
+              name: b.name,
+              collections: b.collections.toList(),
+            ),
+            completed: b.redeemed,
+          ));
+        });
+        return FlutterMap(
+          options: MapOptions(
+            center: LatLng(41.542503, -8.417631),
+            zoom: currentZoom,
+            maxZoom: 18,
+            onPositionChanged: (pos, ges) {
+              if (!_building) updateZoom(pos, ges);
+            },
+            plugins: [
+              PopupMarkerPlugin(),
+            ],
+            interactive: true,
+            onTap: (_) => _popupLayerController.hidePopup(),
+          ),
+          layers: [
+            TileLayerOptions(
+              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              subdomains: ['a', 'b', 'c'],
+            ),
+            PopupMarkerLayerOptions(
+              markers: markers,
+              popupController: _popupLayerController,
+              popupBuilder: (_, Marker marker) {
+                if (marker is LocationMarker)
+                  return LocationMarkerPopup(
+                    location: marker.location,
+                    onClose: () {
+                      _popupLayerController.hidePopup();
+                    },
+                  );
+                return Card(
+                  child: Text("Oops"),
+                );
+              },
+            ),
           ],
-          popupController: _popupLayerController,
-          popupBuilder: (_, Marker marker) {
-            if (marker is LocationMarker)
-              return LocationMarkerPopup(
-                location: marker.location,
-                onClose: () {
-                  _popupLayerController.hidePopup();
-                },
-              );
-            return Card(
-              child: Text("Oops"),
-            );
-          },
-        ),
-      ],
+        );
+      },
+      converter: _SearchViewModel.fromStore,
+      distinct: true,
     );
   }
 
