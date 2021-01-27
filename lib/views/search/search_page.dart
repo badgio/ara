@@ -115,32 +115,48 @@ class DataSearch extends SearchDelegate<String>{
 
   @override
   Widget buildResults(BuildContext context) {
-    //show result on the map based on the selection TODO
+    return buildSuggestions(context);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final badgeNameArr = [];
-    final badgeImageArr = [];
-    final badgeIDArr = [];
+    final List<Badge> badgeArr = [];
     final it = badges.iterator;
 
     while(it.moveNext()) {
-      badgeNameArr.add(it.current.name.toString());
-      badgeImageArr.add(it.current.image);
-      badgeIDArr.add(it.current.id);
+      badgeArr.add(Badge(
+        id: it.current.id,
+        name: it.current.name.toString(),
+        image: it.current.image,
+      ));
     }
 
-    //show when someone searches for something
-    final suggestionList = query.isEmpty
-        ? badgeNameArr
-        : badgeNameArr.where((p) => p.startsWith(query)).toList();
+    final suggestionList = [];
+    final badgeIdArr = [];
+    final badgeImageArr = [];
+    final it2 = badgeArr.iterator;
+
+    if(query.isEmpty) {
+      while(it2.moveNext()) {
+        suggestionList.add(it2.current.name);
+        badgeIdArr.add(it2.current.id);
+        badgeImageArr.add(it2.current.image);
+      }
+    } else {
+      while(it2.moveNext()) {
+        if(it2.current.name.startsWith(query)) {
+          suggestionList.add(it2.current.name);
+          badgeIdArr.add(it2.current.id);
+          badgeImageArr.add(it2.current.image);
+        }
+      }
+    }
 
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {
           StoreProvider.of<AppState>(context)
-              .dispatch(OpenBadgeAction(badgeId: badgeIDArr[index]));
+              .dispatch(OpenBadgeAction(badgeId: badgeIdArr[index]));
         },
         leading: CircleAvatar(
             backgroundImage: MemoryImage(base64Decode(badgeImageArr[index])),
