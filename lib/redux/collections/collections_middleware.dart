@@ -97,7 +97,8 @@ Middleware<AppState> _importData(
             .redeemedBadges
             .contains(badges[i]['uuid']);
       }
-      var location = await getData("/locations?uuid=" + badges[i]['location'], token);
+      var location =
+          await getData("/locations?uuid=" + badges[i]['location'], token);
       var badge = Badge(
         id: badges[i]['uuid'],
         description: badges[i]['description'],

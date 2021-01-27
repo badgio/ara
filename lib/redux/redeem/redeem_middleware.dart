@@ -99,6 +99,8 @@ Future getBadges(
           image: res[i]['image'].substring(22),
           description: res[i]['description'],
           redeemed: true,
+          lat: oldBadge.lat,
+          lng: oldBadge.lng,
           collections: oldBadge.collections);
       oldBadge.collections.forEach((col) async {
         Collection collection = await collectionRep.getCollection(col.id);
