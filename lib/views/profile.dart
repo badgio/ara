@@ -1,3 +1,4 @@
+import 'package:ara/configuration.dart';
 import 'package:ara/models/badge.dart';
 import 'package:ara/models/collection.dart';
 import 'package:ara/models/info_user.dart';
@@ -89,7 +90,7 @@ class Profile extends StatelessWidget {
   Widget _buildMyInfo(
       BuildContext context, String name, String city, String country) {
     return Expanded(
-      flex: 6,
+      flex: 5,
       child: Column(
         children: [
           Padding(
@@ -98,8 +99,9 @@ class Profile extends StatelessWidget {
               top: 10,
             ),
           ),
-          CircleAvatar(
-            radius: 50,
+          Icon(
+            IconData(0xe900, fontFamily: 'MaterialIcons'),
+            size: 120,
           ),
           Padding(
             padding: EdgeInsets.only(
@@ -152,7 +154,7 @@ class Profile extends StatelessWidget {
     }
 
     return Expanded(
-      flex: 4,
+      flex: 3,
       child: Column(
         children: [
           Padding(
@@ -172,7 +174,7 @@ class Profile extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 20),
             child: Text(
-              "Badges Redeemed",
+              "Badges  Redeemed",
               style: Theme.of(context).textTheme.headline5,
               softWrap: true,
               textAlign: TextAlign.center,

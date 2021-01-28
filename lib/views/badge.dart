@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ara/configuration.dart';
 import 'package:ara/models/badge.dart';
 import 'package:ara/models/mobile_user.dart';
 import 'package:ara/redux/app_state.dart';
@@ -57,7 +58,7 @@ class BadgeView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
+                      FlatButton(
                         onPressed: () async {
                           SocialShare.shareTwitter("Visitei",
                                   hashtags: [
@@ -70,12 +71,13 @@ class BadgeView extends StatelessWidget {
                             print(data);
                           });
                         },
-                        child: Text("T"),
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(Configuration.ICON_TWITTER),
+                          radius: 30,
                         ),
                       ),
-                      ElevatedButton(
+                      FlatButton(
                         onPressed: () async {
                           await screenshotController
                               .capture()
@@ -90,12 +92,14 @@ class BadgeView extends StatelessWidget {
                             });
                           });
                         },
-                        child: Text("I"),
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(Configuration.ICON_INSTAGRAM),
+                          radius: 30,
+
                         ),
                       ),
-                      ElevatedButton(
+                      FlatButton(
                         onPressed: () async {
                           await screenshotController
                               .capture()
@@ -121,9 +125,10 @@ class BadgeView extends StatelessWidget {
                                   });
                           });
                         },
-                        child: Text("F"),
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(Configuration.ICON_FACEBOOK),
+                          radius: 30,
                         ),
                       ),
                     ],
