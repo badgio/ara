@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:collection';
 import 'package:ara/models/badge.dart';
 import 'package:ara/models/collection.dart';
 import 'package:ara/redux/collections/collections_actions.dart';
@@ -53,7 +54,16 @@ class CollectionView extends StatelessWidget {
 
   Widget _buildBadgeGrid(Set<Badge> badges, BuildContext context) {
     List<ConstrainedBox> avatars = List();
-    for (Badge badge in badges) {
+    SplayTreeSet<Badge> sortedBadges = SplayTreeSet.from(badges, (a, b) {
+      if (a.redeemed && b.redeemed || !a.redeemed && !b.redeemed) {
+        return a.name.compareTo(b.name);
+      } else if (a.redeemed) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+    for (Badge badge in sortedBadges) {
       avatars.add(
         ConstrainedBox(
           constraints: BoxConstraints.tightFor(
