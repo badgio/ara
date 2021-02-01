@@ -61,6 +61,12 @@ RegExpMatch getMatch(record) {
   }
 }
 
+String getImage(String image) {
+  RegExp exp = new RegExp(r"(.+?,)(.*)");
+  Iterable<RegExpMatch> matches = exp.allMatches(image);
+  return matches.first.group(2);
+}
+
 Future getBadges(
   String token,
   String data,
@@ -96,7 +102,7 @@ Future getBadges(
       Badge badge = Badge(
           id: res[i]['uuid'],
           name: res[i]['name'],
-          image: res[i]['image'].substring(22),
+          image: getImage(res[i]['image']),
           description: res[i]['description'],
           redeemed: true,
           lat: oldBadge.lat,

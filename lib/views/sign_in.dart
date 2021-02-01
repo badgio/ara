@@ -57,6 +57,7 @@ class _SignInFormState extends State<_SignInForm> {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text("Signing you in..."),
           behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 20),
         ));
 
         signInAction.completer.future.catchError((error) {
