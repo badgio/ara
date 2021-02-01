@@ -22,12 +22,12 @@ class HomePage extends StatelessWidget {
           title(),
           vm.timeLimited.isNotEmpty
               ? CollectionsPreview(
-                  title: "Time Limited",
+                  title: "Limited Time",
                   collections: vm.timeLimited.toList(),
                   percentage: false)
               : Container(),
           CollectionsPreview(
-              title: "In progress", collections: inProgress, percentage: true)
+              title: "In Progress", collections: inProgress, percentage: true)
         ];
         return ListView.builder(
           itemCount: previews.length,
